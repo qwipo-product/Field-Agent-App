@@ -1,0 +1,54 @@
+<GridLayout class="bg-searchBg">
+    <GridLayout rows="auto, *">
+        <StackLayout row="0" orientation="horizontal" class="p-2" (tap)="back()">
+            <Label text="&#xf053;" class="back-arrow"></Label>
+            <Label text="Contact Us" class="title"></Label>
+        </StackLayout>
+        <GridLayout row="1" rows="auto,auto,auto,*">
+            <StackLayout row="0" class="mt-4 ml-4">
+                <label text="If you have any query or need any further help"
+                    class="text-sz-14 font-sans font-semibold text-gray-400"></label>
+            </StackLayout>
+            <StackLayout row="1" height="250" width="250">
+                <image row="0" col="0" src="~/images/redesign/Contactus_mid.png" class="h-22 w-22"></image>
+            </StackLayout>
+            <FlexboxLayout row="2" flexDirection="row" class="ml-4 items-center space-x-2">
+                <image row="0" col="0" src="~/images/redesign/Contact_Qwipo_Logo_top.png" class="h-12 w-12"></image>
+                <image row="0" col="0" src="~/images/redesign/Contact_Qwipo_Logo_bg.png" class="h-12 w-12"></image>
+            </FlexboxLayout>
+            <FlexboxLayout row="3" flexDirection="column" class="mt-4 space-y-2">
+                <FlexboxLayout flexDirection="row" class="items-center ml-4 border-top p-2">
+                    <FlexboxLayout width="50" height="50" class="bg-white justify-center rounded-full p-4">
+                        <SVGImage src="~/images/redesign/icons/clock.svg" class="h-5 w-5 bg-white"></SVGImage>
+                    </FlexboxLayout>
+                    <FlexboxLayout flexDirection="column" class="ml-4">
+                        <label text="Office Timing" class="text-sz-14  text-black"></label>
+                        <label text="09:00 AM to 6:00 PM - IST"
+                            class="text-sz-16 pt-1 font-semibold text-black"></label>
+                    </FlexboxLayout>
+                </FlexboxLayout>
+                <FlexboxLayout flexDirection="row" class="items-center ml-4 border-top p-2">
+                    <FlexboxLayout width="50" height="50" class="bg-white justify-center rounded-full p-4">
+                        <SVGImage src="~/images/redesign/icons/email.svg" class="h-5 w-5 bg-white"></SVGImage>
+                    </FlexboxLayout>
+                    <FlexboxLayout flexDirection="column" class="ml-4">
+                        <label text="Email Address" class="text-sz-14 text-black"></label>
+                        <label [text]="contactEmail"
+                            class="text-sz-16 pt-1 font-semibold text-black"></label>
+                    </FlexboxLayout>
+                </FlexboxLayout>
+                <FlexboxLayout flexDirection="row" class="items-center ml-4 border-top p-2">
+                    <FlexboxLayout width="50" height="50" class="bg-white justify-center rounded-full p-4">
+                        <SVGImage src="~/images/redesign/icons/mobile.svg" class="h-5 w-5 text-gray-300 bg-white">
+                        </SVGImage>
+                    </FlexboxLayout>
+                    <FlexboxLayout flexDirection="column" class="ml-4">
+                        <label text="Customer Care Number" class="text-sz-14 text-black"></label>
+                        <label [text]="contactNumber" class="text-sz-16 pt-1 font-semibold text-black"
+                            (tap)="contactUser(contactNumber)"></label>
+                    </FlexboxLayout>
+                </FlexboxLayout>
+            </FlexboxLayout>
+        </GridLayout>
+    </GridLayout>
+</GridLayout>

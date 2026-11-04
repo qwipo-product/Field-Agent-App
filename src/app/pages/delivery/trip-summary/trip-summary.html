@@ -1,0 +1,196 @@
+<StackLayout>
+
+    <GridLayout *ngIf="isLoading">
+        <ScrollView class="pageLogin" height="100%" iosOverflowSafeAreaEnabled="false" *ngIf="isLoading">
+            <StackLayout class="w-100" horizontalAlignment="center" verticalAlignment="center">
+                <ActivityIndicator [busy]="isLoading" width="50" class="activity-indicator"></ActivityIndicator>
+                <Label text="Loading...." class="c-gray text-center font-medium text-sz-14 pl-3"
+                    textWrap="true"></Label>
+            </StackLayout>
+        </ScrollView>
+    </GridLayout>
+
+    <GridLayout rows="*,auto" *ngIf="!isLoading">
+        <StackLayout rows="*,*" class="px-2">
+            <StackLayout row="0" rows="*">
+                <StackLayout row="0" rows="*,*,*" columns="*" sdkExampleTitle sdkToggleNavButton
+                    class="bg-white m-2 rounded-lg elevation">
+                    <StackLayout row="0" class="p-2">
+                        <label text="Trip Details" textWrap="true" verticalAlignment="center"
+                            class="text-black text-sz-16 font-wt-500 text-serif "></label>
+                    </StackLayout>
+                    <StackLayout row="1" class="p-2 border-top-grey" orientation=horizontal *ngIf="tripSummary">
+                        <StackLayout orientation="horizontal" class="w-[50%]">
+                            <StackLayout orientation="vertical" class="w-[50%]">
+                                <label textWrap="true" text="Trip Name"
+                                    class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+
+                                <label textWrap="true" text="Pickups"
+                                    class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                <label textWrap="true" text="Returns"
+                                    class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                <label textWrap="true" text="Weight (Kgs)"
+                                    class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                            </StackLayout>
+                            <StackLayout orientation="vertical" class="w-[50%]">
+                                <label [text]="tripSummary.clusterSequence"
+                                    class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+
+                                <label [text]="tripSummary.pickupHops"
+                                    class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                <label [text]="tripSummary.returnHops"
+                                    class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                <label [text]="tripSummary.weight"
+                                    class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout orientation="horizontal" class="w-[50%]">
+                            <StackLayout orientation="vertical" class="w-[50%]">
+                                <label textWrap="true" text="Trip Number"
+                                    class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                <label textWrap="true" text="Deliveries"
+                                    class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                <label textWrap="true" text="Products"
+                                    class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+
+                            </StackLayout>
+                            <StackLayout orientation="vertical" horizontalAlignment="right" class="w-[50%]">
+                                <label [text]="tripSummary.tripNumber" horizontalAlignment="right"
+                                    class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                <label [text]="tripSummary.deliveryHops" horizontalAlignment="right"
+                                    class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                <label [text]="tripSummary.skusCount" horizontalAlignment="right"
+                                    class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout row="1" rows="*" class="mt-5" *ngIf="tripSummary">
+                <StackLayout row="0" rows="auto,*" class="bg-white m-2 rounded-lg elevation" orientation="vertical">
+                    <StackLayout row="0" class="p-2">
+                        <label text="Trip Collections" textWrap="true" verticalAlignment="center"
+                            class="text-black text-sz-16 font-wt-500 text-serif "></label>
+                    </StackLayout>
+                    <StackLayout row="1" rows="50,50,50,50,50,50,50" class="p-2 border-top-grey" orientation="vertical">
+
+                        <StackLayout row="0" orientation="horizontal" class="w-[100%]">
+                            <StackLayout orientation="vertical" class="w-[70%]">
+                                <label textWrap="true" text="Customer Delivery Value"
+                                    class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+
+                            </StackLayout>
+                            <StackLayout orientation="vertical" class="w-[30%]">
+                                <label [text]="tripSummary.dispatchValue | replaceCommas"
+                                    horizontalAlignment="right"
+                                    class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+
+                            </StackLayout>
+                        </StackLayout>
+
+                        <StackLayout row="1" orientation="horizontal" class="w-[100%] border-top-grey">
+                            <StackLayout orientation="vertical" class="w-[70%]">
+                                <label textWrap="true" text="Customer Return Value"
+                                    class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+
+                            </StackLayout>
+                            <StackLayout orientation="vertical" class="w-[30%]">
+                                <label [text]="tripSummary.customerReturns | replaceCommas"
+                                    horizontalAlignment="right"
+                                    class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+
+                            </StackLayout>
+                        </StackLayout>
+
+                        <StackLayout row="2" orientation="horizontal" class="w-[100%] border-top-grey">
+                            <StackLayout orientation="vertical" class="w-[70%]">
+                                <label textWrap="true" text="Vendor Pickup/Drop Value"
+                                    class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+
+                            </StackLayout>
+                            <StackLayout orientation="vertical" class="w-[30%]">
+                                <label [text]="tripSummary.vendorPickups | replaceCommas" horizontalAlignment="right"
+                                    class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+
+                            </StackLayout>
+                        </StackLayout>
+
+                        <StackLayout row="3" orientation="horizontal" class="w-[100%] border-top-grey">
+                            <StackLayout orientation="vertical" class="w-[70%]">
+                                <label textWrap="true" text="Vendor Returns"
+                                    class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+
+                            </StackLayout>
+                            <StackLayout orientation="vertical" class="w-[30%]">
+                                <label [text]="tripSummary.vendorReturns | replaceCommas" horizontalAlignment="right"
+                                    class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+
+
+                            </StackLayout>
+                        </StackLayout>
+
+                        <StackLayout row="4" orientation="horizontal" class="w-[100%] border-top-grey">
+                            <StackLayout orientation="vertical" class="w-[70%]">
+                                <label textWrap="true" text="Customer COD Collections"
+                                    class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+
+                            </StackLayout>
+                            <StackLayout orientation="vertical" class="w-[30%]">
+                                <label [text]="tripSummary.cashCollections | replaceCommas"
+                                    horizontalAlignment="right"
+                                    class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+
+                            </StackLayout>
+                        </StackLayout>
+
+                        <StackLayout row="5" orientation="horizontal" class="w-[100%] border-top-grey">
+                            <StackLayout orientation="vertical" class="w-[70%]">
+                                <label textWrap="true" text="Customer Online Payments"
+                                    class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+
+                            </StackLayout>
+                            <StackLayout orientation="vertical" class="w-[30%]">
+                                <label [text]="tripSummary.onlinePayments | replaceCommas"
+                                    horizontalAlignment="right"
+                                    class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+
+                            </StackLayout>
+                        </StackLayout>
+
+
+                        <StackLayout row="6" orientation="horizontal" class="w-[100%] border-top-grey">
+                            <StackLayout orientation="vertical" class="w-[70%]">
+                                <label textWrap="true" text="Balance(Pending Amount)"
+                                    class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                            </StackLayout>
+                            <StackLayout orientation="vertical" class="w-[30%]">
+                                <label [text]="balance | replaceCommas" horizontalAlignment="right"
+                                    class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+        <StackLayout row="1" height="70" *ngIf="tripSummary"
+            verticalAlignment="bottom" class="mb-30">
+            <GridLayout rows="*" class="primary-btn3 float-grid" height="50" orientation="horizontal"
+                verticalAlignment="center" (tap)="changeTripStatus(tripSummary.tripId , tripSummary.tripStatus)"
+                *ngIf="!showAdminDetails && tripSummary.tripStatus ==1">
+                <label text="Start" horizontalAlignment="center" verticalAlignment="center"
+                    class="text-sz-14 fabold"></label>
+            </GridLayout>
+            <GridLayout rows="*" class="primary-btn3 float-grid" height="50" orientation="horizontal"
+                verticalAlignment="center" (tap)="changeTripStatus(tripSummary.tripId , tripSummary.tripStatus)"
+                *ngIf="!showAdminDetails && tripSummary.tripStatus == 2">
+                <label text="In-Progress" horizontalAlignment="center" verticalAlignment="center"
+                    class="text-sz-14 fabold"></label>
+            </GridLayout>
+            <GridLayout rows="*" class="primary-btn3 float-grid" height="50" orientation="horizontal"
+                verticalAlignment="center" *ngIf="!showAdminDetails && tripSummary.tripStatus == 3">
+                <label text="Trip Completed Successfully" horizontalAlignment="center" verticalAlignment="center"
+                    class="text-sz-14 fabold"></label>
+            </GridLayout>
+        </StackLayout>
+    </GridLayout>
+</StackLayout>

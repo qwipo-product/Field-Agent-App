@@ -1,0 +1,50 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "web",
+  "cli": { "analytics": false },
+  "projects": {
+    "web": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": { "base": "dist/web", "browser": "" },
+            "index": "web/index.html",
+            "browser": "web/main.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "web/tsconfig.json",
+            "assets": [
+              { "glob": "**/*", "input": "src/images", "output": "images" },
+              { "glob": "**/*", "input": "src/assets", "output": "assets" },
+              { "glob": "**/*", "input": "web/public", "output": "" }
+            ],
+            "styles": ["web/styles.css", "web/gen/app.css"],
+            "allowedCommonJsDependencies": ["semver", "nativescript-sqlite"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "budgets": [{ "type": "initial", "maximumWarning": "2mb", "maximumError": "4mb" }]
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": { "buildTarget": "web:build:development", "port": 4300 }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+<StackLayout class="px-2">
+    <GridLayout rows="auto,*" class="w-[100%] m-2 mb-2 bg-white br-30 elevation">
+        <StackLayout row="0" orientation="horizontal" class="p-2">
+            <label [text]="order.orderNumber" class="text-black text-sz-14 font-wt-500 text-serif"></label>
+        </StackLayout>
+        <StackLayout row="1" class="p-2 border-top-grey" orientation="horizontal">
+            <StackLayout class="w-[40%]" orientation="vertical">
+                <label text="Order Date" class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                <label text="Order Amount" class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                <label text="Order Out.Amt." class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                <label text="Order Status" class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+            </StackLayout>
+            <StackLayout class="w-[60%]" orientation="vertical">
+                <label [text]="order.orderDate |date_ddmmmyyyy" horizontalAlignment="right"
+                    class="text-raleway text-sz-14 text-black font-medium pt-1  text-right"></label>
+                <label [text]="order.orderAmount | currency" horizontalAlignment="right"
+                    class="text-raleway text-sz-14 text-black font-medium pt-1  text-right"></label>
+                <label [text]="order.orderOutStandingAmount | currency" horizontalAlignment="right"
+                    class="text-raleway text-sz-14 text-black font-medium pt-1  text-right"></label>
+                <label [text]="order.orderStatus" horizontalAlignment="right"
+                    class="text-raleway text-sz-14 text-black font-medium pt-1  text-right"></label>
+            </StackLayout>
+        </StackLayout>
+    </GridLayout>
+</StackLayout>

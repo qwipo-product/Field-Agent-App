@@ -1,0 +1,71 @@
+<StackLayout height="100%" iosOverflowSafeAreaEnabled="false">
+	<GridLayout rows="*,auto" class="bg-white">
+		<StackLayout row="0" class="m-2 p-2 h-[70%]">
+			<Image src="~/images/qwipo-bg.png" width="90" height="60"></Image>
+			<Label text="Enter mobile number" class="header font-extrabold pl-3" textWrap="true"></Label>
+			<GridLayout rows="auto,auto" class="bg-searchBg border-1-grey h7 pl-4 mt-2">
+				<StackLayout row="0">
+					<Label text="Mobile number" class="text-sz-12 text-textMuted pt-2" textWrap="true"></Label>
+				</StackLayout>
+				<GridLayout rows="auto" columns="auto, *,auto" class="pt-5">
+					<StackLayout col="0" class="mt-1 mt1" horizontalAlignment="left" orientation="horizontal">
+						<Label class="text-black text-sz-14 bg-searchBg" text="+91" verticalAlignment="center"></Label>
+					</StackLayout>
+					<StackLayout col="1" class="mt-1 mt1">
+						<TextField #mobileNumberInput class="text-black text-sz-14 bg-searchBg pl-2"
+							keyboardType="number" verticalAlignment="center" maxlength="10" [editable]="true"
+							(textChange)="onMobileNumberChange(mobileNumberInput.text)"></TextField>
+					</StackLayout>
+					<StackLayout col="2" class="mt-1 mt1 mr-3" horizontalAlignment="right" orientation="horizontal"
+						verticalAlignment="center">
+						<Label class="text-black text-sz-14 bg-searchBg" text="IND" verticalAlignment="center"></Label>
+						<label text="&#xf054;" class="text-black fas text-sz-16 pl-1"
+							verticalAlignment="center"></label>
+					</StackLayout>
+				</GridLayout>
+			</GridLayout>
+			<StackLayout row="1" orientation="vertical" *ngIf="!showIOS">
+				<Label
+					[ngClass]="mobileNumberInput.text?.length === 10 && isValidMobileNumber(mobileNumberInput.text) ? 'text-success-500' : 'text-danger-500'"
+					[text]="(mobileNumberInput.text?.length ?? 0) + '/10'" class="text-sz-14 text-secondary pt-2 pl-5"
+					verticalAlignment="center"></Label>
+				<Label *ngIf="mobileNumberInput.text && !isValidMobileNumber(mobileNumberInput.text)" textWrap="true"
+					class="pt-5 pl-2">
+					<FormattedString>
+						<Span text="Please enter valid 10-digit phone number."
+							class="text-danger-500 text-sz-14"></Span>
+						<Span text="&#xf05a;" class="text-danger-500 text-sz-14 fas"></Span>
+					</FormattedString>
+				</Label>
+			</StackLayout>
+			<GridLayout row="1" orientation="horizontal" verticalAlignment="top" *ngIf="showIOS">
+				<Label
+					[ngClass]="mobileNumberInput.text?.length === 10 && isValidMobileNumber(mobileNumberInput.text) ? 'text-success-500' : 'text-danger-500'"
+					[text]="(mobileNumberInput.text?.length ?? 0) + '/10'" class="text-sz-14 text-secondary pt-2 pl-5"
+					verticalAlignment="center"></Label>
+				<Label *ngIf="mobileNumberInput.text && !isValidMobileNumber(mobileNumberInput.text)" textWrap="true"
+					class="pt-5 pl-2 mt-5">
+					<FormattedString>
+						<Span text="Please enter valid 10-digit phone number."
+							class="text-danger-500 text-sz-14"></Span>
+						<Span text="&#xf05a;" class="text-danger-500 text-sz-14 fas"></Span>
+					</FormattedString>
+				</Label>
+			</GridLayout>
+		</StackLayout>
+		<StackLayout row="1" orientation="vertical" rows="*,auto" class="h-[30%]">
+			<StackLayout row="0" orientation="vertical" horizontalAlignment="center" verticalAlignment="top">
+				<Label text="By proceeding, you are agreeing to Qwipo's"
+					class="text-sm text-secondary pt-5 text-center"></Label>
+				<Label text="Terms & Conditions" class="text-sm text-black pt-2 font-bold text-center"
+					(tap)="navigation()"></Label>
+			</StackLayout>
+			<StackLayout row="1" height="60" orientation="vertical" horizontalAlignment="center"
+				verticalAlignment="bottom">
+				<Button text="Continue"
+					[ngClass]="!enableLoginButton ? 'secondary-btn2 h-[80%] mt-5' : 'primary-btn2 h-[80%] mt-5'"
+					[isEnabled]="enableLoginButton" verticalAlignment="center" (tap)="sendOtp()"></Button>
+			</StackLayout>
+		</StackLayout>
+	</GridLayout>
+</StackLayout>

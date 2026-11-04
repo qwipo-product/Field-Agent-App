@@ -1,0 +1,160 @@
+<GridLayout rows="auto" verticalAlignment="bottom" [height]="popupHeight ? popupHeight : 455"
+    class="bg-white" borderRadius="25 25 0 0">
+    <StackLayout *ngIf="type == 101" class="pb-5 px-5" height="1100">
+        <GridLayout columns="*,30" rows="*" dock="top" class="bg-white p-3 border-b-2 border-gray-200"
+            verticalAlignment="center">
+            <Label col="0" row="0" [text]="modifyOrder.itemName" textWrap="true" verticalAlignment="center"
+                horizontalAlignment="left" class="text-black pl-2 text-sz-16 font-wt-700 text-sans"></Label>
+            <Label col="1" row="0" text="&#xf00d;" (tap)="close()" verticalAlignment="center"
+                horizontalAlignment="center" class="text-right fas fa-thin text-secondary font-wt-100 text-xl"></Label>
+        </GridLayout>
+        <ScrollView height="850" orientation="vertical" scrollBarIndicatorVisible="false">
+            <StackLayout verticalAlignment="top">
+                <!-- readonly -->
+                <GridLayout>
+                    <StackLayout row="1" class="p-2 border-top-grey" orientation="horizontal">
+                        <StackLayout orientation="vertical" class="w-[30%]">
+                            <label textWrap="true" text="UPC"
+                                class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                            <label textWrap="true" text="Ordered Qty Css"
+                                class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                            <label textWrap="true" text="Ordered Qty Pcs"
+                                class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                            <label textWrap="true" text="Total Qty For Edit"
+                                class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                        </StackLayout>
+                        <StackLayout orientation="vertical" class="w-[70%]">
+                            <label [text]="modifyOrder.upc" horizontalAlignment="right"
+                                class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                            <label [text]="modifyOrder.requestCss" horizontalAlignment="right"
+                                class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                            <label [text]="modifyOrder.requestPcs" horizontalAlignment="right"
+                                class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                            <label [text]="modifyOrder.requestedQuantity" horizontalAlignment="right"
+                                class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                        </StackLayout>
+                    </StackLayout>
+                </GridLayout>
+
+                <GridLayout rows="auto,40" class="bg-searchBg border-1-grey pl-2 mt-4 mb-4" *ngIf="isCasesZero">
+                    <StackLayout row="0" orientation="horizontal">
+                        <label text="Available Qty Css" class="text-sz-12 text-label pt-2" textWrap="true"></label>
+                    </StackLayout>
+                    <GridLayout row="1" columns="*">
+                        <GridLayout col="0" verticalAlignment="center">
+                            <TextField class="text-black text-sz-14 bg-searchBg" verticalAlignment="center"
+                                [(ngModel)]="modifyOrder.availableCss" keyboardType="number" [editable]="isCasesZero">
+                            </TextField>
+                        </GridLayout>
+                    </GridLayout>
+                </GridLayout>
+
+                <GridLayout rows="auto,40" class="bg-searchBg border-1-grey pl-2 mt-4 mb-4">
+                    <StackLayout row="0" orientation="horizontal">
+                        <label text="Available Qty Pcs" class="text-sz-12 text-label pt-2" textWrap="true"></label>
+                    </StackLayout>
+                    <GridLayout row="1" columns="*">
+                        <GridLayout col="0" verticalAlignment="center">
+                            <TextField class="text-black text-sz-14 bg-searchBg" verticalAlignment="center"
+                                [(ngModel)]="modifyOrder.availablePcs" keyboardType="number">
+                            </TextField>
+                        </GridLayout>
+                    </GridLayout>
+                </GridLayout>
+
+                <GridLayout rows="auto,40" class="bg-searchBg border-1-grey pl-2 mt-4 mb-4"
+                    *ngIf="!modifyOrder.isVendorDrop && isCasesZero">
+                    <StackLayout row="0" orientation="horizontal">
+                        <label text="Enter Damage Qty Css" class="text-sz-12 text-label pt-2" textWrap="true"></label>
+                    </StackLayout>
+                    <GridLayout row="1" columns="*">
+                        <GridLayout col="0" verticalAlignment="center">
+                            <TextField class="text-black text-sz-14 bg-searchBg" verticalAlignment="center"
+                                [(ngModel)]="modifyOrder.availableDamageCss" keyboardType="number"
+                                [editable]="isCasesZero">
+                            </TextField>
+                        </GridLayout>
+                    </GridLayout>
+                </GridLayout>
+
+                <GridLayout rows="auto,40" class="bg-searchBg border-1-grey pl-2 mt-4 mb-4"
+                    *ngIf="!modifyOrder.isVendorDrop">
+                    <StackLayout row="0" orientation="horizontal">
+                        <label text="Enter Damage Qty Pcs" class="text-sz-12 text-label pt-2" textWrap="true"></label>
+                    </StackLayout>
+                    <GridLayout row="1" columns="*">
+                        <GridLayout col="0" verticalAlignment="center">
+                            <TextField class="text-black text-sz-14 bg-searchBg" verticalAlignment="center"
+                                [(ngModel)]="modifyOrder.availableDamagePcs" keyboardType="number">
+                            </TextField>
+                        </GridLayout>
+                    </GridLayout>
+                </GridLayout>
+
+
+
+
+                <!-- <GridLayout rows="auto,auto" class="bg-searchBg border-1-grey pl-4 mt-4 mx-5">
+                    <StackLayout row="0" orientation="horizontal">
+                        <label text="Quantity Available For Edit" class="text-sz-12 text-label pt-2"
+                            textWrap="true"></label>
+                    </StackLayout>
+                    <GridLayout rows="auto" class="pt-5">
+                        <StackLayout col="1" class="pt-1 pr-1 pb-1">
+                            <TextField class="text-black text-sz-14 bg-searchBg" verticalAlignment="center"
+                                [(ngModel)]="modifyOrder.requestedQuantity" keyboardType="number" [editable]="false">
+                            </TextField>
+                        </StackLayout>
+                    </GridLayout>
+                </GridLayout> -->
+                <!-- <GridLayout rows="auto,auto" class="bg-searchBg border-1-grey pl-4 mt-4 mx-5">
+                    <StackLayout row="0" orientation="horizontal">
+                        <label text="Enter Available Quantity" class="text-sz-12 text-label pt-2"
+                            textWrap="true"></label>
+                    </StackLayout>
+                    <GridLayout rows="auto" class="pt-5">
+                        <StackLayout col="1" class="pt-1 pr-1 pb-1">
+                            <TextField class="text-black text-sz-14 bg-searchBg" verticalAlignment="center"
+                                [(ngModel)]="modifyOrder.availableQuantity" keyboardType="number">
+                            </TextField>
+                        </StackLayout>
+                    </GridLayout>
+                </GridLayout> -->
+                <!-- <GridLayout rows="auto,auto" class="bg-searchBg border-1-grey pl-4 mt-4 mx-5"
+                    *ngIf="!modifyOrder.isVendorDrop">
+                    <StackLayout row="0" orientation="horizontal">
+                        <label text="Enter Damage Quantity" class="text-sz-12 text-label pt-2" textWrap="true"></label>
+                    </StackLayout>
+                    <GridLayout rows="auto" class="pt-5">
+                        <StackLayout col="1" class="pt-1 pr-1 pb-1">
+                            <TextField class="text-black text-sz-14 bg-searchBg" verticalAlignment="center"
+                                [(ngModel)]="modifyOrder.damageQuantity" keyboardType="number">
+                            </TextField>
+                        </StackLayout>
+                    </GridLayout>
+                </GridLayout> -->
+                <!-- <GridLayout rows="auto,auto" class="bg-searchBg border-1-grey pl-4 mt-4 mx-5"
+                    *ngIf="!modifyOrder.isVendorDrop">
+                    <StackLayout row="0" orientation="horizontal">
+                        <label text="Enter No Physical Stock" class="text-sz-12 text-label pt-2"
+                            textWrap="true"></label>
+                    </StackLayout>
+                    <GridLayout rows="auto" class="pt-5">
+                        <StackLayout col="1" class="pt-1 pr-1 pb-1">
+                            <TextField class="text-black text-sz-14 bg-searchBg" verticalAlignment="center"
+                                [(ngModel)]="modifyOrder.noPhysicalStock" keyboardType="number">
+                            </TextField>
+                        </StackLayout>
+                    </GridLayout>
+                </GridLayout> -->
+
+                <StackLayout height="70" class="mx-5 cat_image">
+                    <Label text="Modify"
+                        class="text-sz-13 mt-4  h-10 p-2 text-center font-wt-500 rounded-full  border-2 border-black bg-black text-white font-serif"
+                        (tap)="save()"></Label>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
+
+</GridLayout>

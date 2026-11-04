@@ -1,0 +1,139 @@
+<DockLayout stretchLastChild="true">
+    <StackLayout dock="bottom">
+        <footer-bar [isSelected]="2"></footer-bar>
+    </StackLayout>
+    <StackLayout class="bg-searchBg">
+        <GridLayout rows="*" class="mt-5">
+            <StackLayout row="0" verticalAlignment="top">
+                <GridLayout rows="*" *ngIf="isLoading" class="loader">
+                    <StackLayout row="0" height="100" horizontalAlignment="center" verticalAlignment="center">
+                        <ActivityIndicator busy="true" class="activity-indicator"></ActivityIndicator>
+                        <Label text="Loading...." class="load-text" textWrap="true"></Label>
+                    </StackLayout>
+                </GridLayout>
+                <ng-container *ngIf="!isLoading && mainHops && mainHops.length > 0">
+                    <StackLayout rows="auto,*">
+                        <StackLayout row="0" class="w-[98%] m-2 px-2">
+                            <GridLayout columns="*,50" class="bg-white rounded-xl" height="50">
+                                <StackLayout col="0" orientation="horizontal" class="pl-2 pt-2 pb-2">
+                                    <Label text="&#xf002;" class="fas text-sz-16 text-secondary"
+                                        horizontalAlignment="right"></Label>
+                                    <TextField class="text-sz-14 ml-2 text-black font-wt-800 no-underline"
+                                        hint="Search with Customer Number or Business Name" [(ngModel)]="searchText"
+                                        (ngModelChange)="searchDebounce($event)"></TextField>
+                                </StackLayout>
+                                <StackLayout col="1" horizontalAlignment="right" verticalAlignment="center"
+                                    *ngIf="searchText && searchText.length > 0" (tap)="clearSearchText()">
+                                    <Label text="&#xf057;" class="fas text-sz-14 text-black text-right mr-2"></Label>
+                                </StackLayout>
+                            </GridLayout>
+                        </StackLayout>
+                        <ListView row="1" *ngIf="hops.length > 0" [items]="hops" height="100%"
+                            separatorColor="transparent" class="mt-2">
+                            <ng-template let-hop="item">
+                                <StackLayout class="px-2">
+                                    <StackLayout rows="*,*,*,*" class="bg-white m-2 mb-2 rounded-lg elevation">
+                                        <StackLayout row="0" orientation="horizontal" class="p-2">
+                                            <StackLayout verticalAlignment="center"
+                                                class="bg-searchBg p-2 rounded-full">
+                                                <SVGImage src="~/images/redesign/deliverytruck-black-icon.svg"
+                                                    verticalAlignment="center" height="30" width="30"></SVGImage>
+                                            </StackLayout>
+                                            <StackLayout verticalAlignment="center" horizontalAlignment="center"
+                                                orientation="vertical" class="w-[65%] pl-2">
+                                                <Label [text]="hop.pointBusinessName"
+                                                    class="text-raleway text-sz-14 text-black font-medium"></Label>
+                                                <Label [text]="hop.pointName" (tap)="contactUser(hop.pointMobileNumber)"
+                                                    class="text-black text-sz-14 pt-1"></Label>
+                                                <Label [text]="'+91'+hop.pointMobileNumber"
+                                                    (tap)="contactUser(hop.pointMobileNumber)"
+                                                    class="text-black text-sz-14 pt-1"></Label>
+                                            </StackLayout>
+                                            <StackLayout (tap)="navigateToHopDetails(hop)" verticalAlignment="center"
+                                                horizontalAlignment="right" class="br-30 bg-info text-white w-[20%]"
+                                                height="40">
+                                                <Label text="View" verticalAlignment="center"
+                                                    class="text-white text-sz-12 font-medium text-center"></Label>
+                                            </StackLayout>
+                                        </StackLayout>
+                                        <StackLayout row="1" orientation="horizontal" class="p-2 border-top-grey">
+                                            <GridLayout rows="*" columns="*,75">
+                                                <StackLayout row="0" col="0" verticalAlignment="center">
+                                                    <Label text="Address"
+                                                        class="text-raleway text-sz-14 text-black font-medium"></Label>
+                                                    <Label [text]="hop.pointAddress" textWrap="true"
+                                                        class="text-black text-sz-14 pt-1"></Label>
+                                                </StackLayout>
+                                                <StackLayout row="0" col="1" verticalAlignment="center"
+                                                    (tap)="openUrl(hop.pointLat, hop.pointLng)">
+                                                    <SVGImage src="~/images/redesign/Map.svg" class="h-[50] w-[50]">
+                                                    </SVGImage>
+                                                </StackLayout>
+                                            </GridLayout>
+                                        </StackLayout>
+                                        <StackLayout row="2" class="p-2 border-top-grey" orientation="horizontal">
+                                            <StackLayout orientation="horizontal" class="w-[50%]">
+                                                <StackLayout orientation="vertical" class="w-[50%]">
+                                                    <Label text="Status"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1"></Label>
+                                                    <Label text="OTP"
+                                                        *ngIf="showAdminDetails && hop.source != 3 && hop.pointMode != 2 && hop.pointType != 2"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1"></Label>
+                                                </StackLayout>
+                                                <StackLayout orientation="vertical" class="w-[50%]">
+                                                    <Label [text]="(hop.hopStatus | hopStatusLabel)"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1"></Label>
+                                                    <Label [text]="hop.otp"
+                                                        *ngIf="showAdminDetails && hop.source != 3 && hop.pointMode != 2 && hop.pointType != 2"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1"></Label>
+                                                </StackLayout>
+                                            </StackLayout>
+                                            <StackLayout orientation="horizontal" class="w-[50%]">
+                                                <StackLayout orientation="vertical" class="w-[50%]">
+                                                    <Label text="Hop"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1"></Label>
+                                                </StackLayout>
+                                                <StackLayout orientation="vertical" horizontalAlignment="right"
+                                                    class="w-[50%]">
+                                                    <Label [text]="hop.stopNumber"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1"></Label>
+                                                </StackLayout>
+                                            </StackLayout>
+                                        </StackLayout>
+                                        <StackLayout row="3" class="p-2 border-top-grey" orientation="horizontal">
+                                            <StackLayout orientation="vertical" class="w-[50%]">
+                                                <Label text="Hop Mode"
+                                                    class="text-raleway text-sz-14 text-black font-medium"></Label>
+                                            </StackLayout>
+                                            <StackLayout orientation="vertical" class="w-[50%]">
+                                                <Label
+                                                    [text]="(hop.pointMode | pointModeLabel) + ' ' + (hop.pointMode | concatenateLabel) + ' ' + (hop.pointType | pointTypeLabel)"
+                                                    class="text-raleway text-sz-14 text-black font-medium"
+                                                    horizontalAlignment="right"></Label>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ng-template>
+                        </ListView>
+                        <StackLayout row="1" *ngIf="!isLoading && (!hops || hops.length === 0)">
+                            <StackLayout horizontalAlignment="center" verticalAlignment="center" class="mt-5">
+                                <Image src="~/images/noservice.png" class="h-[30%] w-[40%]"></Image>
+                                <Label text="No matching customers found" class="text-black text-sz-16 mt-2 font-medium"
+                                    horizontalAlignment="center" textWrap="true"></Label>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </ng-container>
+                <ng-container *ngIf="!isLoading && mainHops.length === 0">
+                    <StackLayout horizontalAlignment="center" verticalAlignment="center" class="mt-5">
+                        <Image src="~/images/noservice.png" class="h-[30%] w-[40%]"></Image>
+                        <Label text="No active trip hops found. Please go to trips list page."
+                            class="text-black text-sz-16 mt-2 font-medium" horizontalAlignment="center"
+                            textWrap="true"></Label>
+                    </StackLayout>
+                </ng-container>
+            </StackLayout>
+        </GridLayout>
+    </StackLayout>
+</DockLayout>

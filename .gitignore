@@ -1,0 +1,26 @@
+# Dependencies and build output
+node_modules/
+platforms/
+hooks/
+dist/
+web/gen/
+.angular/
+
+# NativeScript compiles TypeScript in place
+*.js
+*.js.map
+*.css
+!webpack.config.js
+!tailwind.config.js
+!postcss.config.js
+!web/**/*.js
+!web/**/*.css
+
+# Logs and editors
+*.log
+.DS_Store
+.idea/
+.vscode/
+
+# Local tooling
+.claude/

@@ -1,0 +1,32 @@
+<DockLayout stretchLastChild="true">
+    <StackLayout dock="bottom">
+        <sub-footer-bar [isSelected]="7"></sub-footer-bar>
+    </StackLayout>
+    <StackLayout height="95%" verticalAlignment="top" class="bg-white">
+        <StackLayout height="100%">
+            <Image src="~/images/qwipo-bg.png" width="90" height="40" class="pl-2 mt-5">
+            </Image>
+            <StackLayout height="300" width="300" horizontalAlignment="center">
+                <Image row="0" col="0" src="~/images/update_img.png" class="h-22 w-22"></Image>
+            </StackLayout>
+            <StackLayout horizontalAlignment="center">
+                <Label text=" We have an update! " class="font-bold text-2xl pt-2 pl-5 text-black font-sans">
+                </Label>
+                <StackLayout horizontalAlignment="center">
+                    <Label text=" Our current mobile app has been" class="font-bold pt-3 font-sans pl-5">
+                    </Label>
+                    <Label text=" revamped with new exiting/ additional  " class="font-bold font-sans pt-1">
+                    </Label>
+                    <Label text=" features. " class="font-bold font-sans pl-20 pt-1"> </Label>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout horizontalAlignment="center" class="mt-20">
+                <GridLayout rows="*" class="primary-btn3 float-grid" height="50" orientation="horizontal"
+                    verticalAlignment="center" horizontalAlignment="center" (tap)="goToPlayStore()">
+                    <Label text="Update" horizontalAlignment="center" verticalAlignment="center"
+                        class="text-sz-14 fabold"></Label>
+                </GridLayout>
+            </StackLayout>
+        </StackLayout>
+    </StackLayout>
+</DockLayout>

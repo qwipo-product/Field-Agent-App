@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "dom"],
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
+    "skipLibCheck": true,
+    "allowJs": false,
+    "baseUrl": "..",
+    "paths": {
+      "~/*": ["src/*"],
+      "@/*": ["src/*"],
+      "@nativescript/core": ["web/shims/core.ts"],
+      "@nativescript/core/*": ["web/shims/core.ts"],
+      "@nativescript/angular": ["web/shims/angular.ts"],
+      "@nativescript/appversion": ["web/shims/plugins.ts"],
+      "@nativescript/camera": ["web/shims/plugins.ts"],
+      "@nativescript/geolocation": ["web/shims/plugins.ts"],
+      "@nstudio/nativescript-fancyalert": ["web/shims/plugins.ts"],
+      "@nstudio/nativescript-loading-indicator": ["web/shims/plugins.ts"],
+      "@nstudio/nativescript-snackbar": ["web/shims/plugins.ts"],
+      "@triniwiz/nativescript-toasty": ["web/shims/plugins.ts"],
+      "@sergeymell/nativescript-svg": ["web/shims/plugins.ts"],
+      "nativescript-exit": ["web/shims/plugins.ts"],
+      "nativescript-phone": ["web/shims/plugins.ts"],
+      "nativescript-sqlite": ["web/shims/sqlite.js"]
+    }
+  },
+  "files": ["main.ts", "shims/globals.d.ts"],
+  "angularCompilerOptions": {
+    "strictTemplates": false,
+    "strictInjectionParameters": false
+  }
+}

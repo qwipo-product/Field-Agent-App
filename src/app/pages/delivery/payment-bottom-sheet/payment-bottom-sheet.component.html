@@ -1,0 +1,217 @@
+<GridLayout rows="auto" verticalAlignment="bottom" [height]="popupHeight ? popupHeight : 455"
+  class="bg-white" borderRadius="25 25 0 0">
+
+  <StackLayout verticalAlignment="center" class="pb-5 pr-5">
+    <GridLayout columns="*,50" rows="*" dock="top" class="bg-white mt-5 pb-4 border-b-2 border-gray-200"
+      verticalAlignment="center" height="50">
+      <Label col="0" row="0" text="Payment" verticalAlignment="center" horizontalAlignment="left"
+        class="text-black text-sz-16 pl-3 font-wt-700 text-sans"></Label>
+      <Label col="1" row="0" text="&#xf00d;" (tap)="close('')" verticalAlignment="center" horizontalAlignment="center"
+        class="m-0 text-right fas fa-thin text-secondary font-wt-100 text-2xl">
+      </Label>
+    </GridLayout>
+
+
+
+    <GridLayout rows="*" *ngIf="isLoading" class="loader">
+      <StackLayout row="0" height="100" horizontalAlignment="center" verticalAlignment="center">
+          <ActivityIndicator busy="true" class="activity-indicator"></ActivityIndicator>
+          <Label text="Loading...." class="load-text" textWrap="true"></Label>
+      </StackLayout>
+  </GridLayout>
+
+    <GridLayout rows="*,*" height="100%" *ngIf="!isQrScreen && !isLoading">
+      <!-- <ScrollView row="0" col="0" height="100%" scrollBarIndicatorVisible="false"> -->
+      <GridLayout row="0" columns="2*,3*">
+        <StackLayout row="0" col="0" *ngFor="let filter of mainFilters" verticalAlignment="top" (tap)="onFilterChange()"
+          class="border-1x">
+          <StackLayout height="50" verticalAlignment="center" orientation="horizontal" [ngClass]="
+                filter.id == selectedFilter ? 'bg-white' : 'bg-searchBg'">
+            <Label [text]="filter.displayName" class="text-left text-black pl-5" textWrap="true"
+              verticalAlignment="center"></Label>
+          </StackLayout>
+        </StackLayout>
+        <!-- </ScrollView> -->
+        <StackLayout row="0" col="1" height="100%" scrollBarIndicatorVisible="false">
+          <StackLayout class="ml-2">
+            <StackLayout row="0" *ngFor="let filter of subFilters" verticalAlignment="center">
+              <GridLayout rows="50" columns="10,*,40,5" verticalAlignment="center" class="border-b-2 border-gray-200"
+                (tap)="selectSubFilter(filter)">
+                <StackLayout row="0" col="1" verticalAlignment="center" horizontalAlignment="left">
+                  <label [text]="filter.name" class="text-black text-left text-sz-14" textWrap="true"></label>
+                </StackLayout>
+                <StackLayout row="0" col="2" verticalAlignment="center">
+                  <SVGImage src="~/images/redesign/icons/radio-selected.svg" *ngIf="filter.isSelected" class="w-4 h-4">
+                  </SVGImage>
+                  <SVGImage src="~/images/redesign/icons/radio-before.svg" *ngIf="!filter.isSelected" class="w-4 h-4">
+                  </SVGImage>
+                </StackLayout>
+              </GridLayout>
+            </StackLayout>
+
+          </StackLayout>
+        </StackLayout>
+      </GridLayout>
+
+
+
+
+      <GridLayout row="1" class="mt-2">
+        <StackLayout rows="*,*">
+          <StackLayout row="0" *ngIf="isSubFilterSelected(1101)">
+            <StackLayout col="1" class="mt-1">
+
+
+              <GridLayout rows="auto,auto" class="bg-searchBg border-1-grey pl-4 mt-5 mx-5">
+                <StackLayout row="0" orientation="horizontal">
+                  <label text="Amount" class="text-sz-14 text-label pt-2" textWrap="true"></label>
+                </StackLayout>
+                <StackLayout row="1" class="pt-2 pb-2">
+                  <TextField keyboardType="number" [(ngModel)]="amount" class="text-black no-underline text-sz-14 mr-2"
+                    verticalAlignment="center">
+                  </TextField>
+                </StackLayout>
+              </GridLayout>
+
+              <label text="Generate Qr" verticalAlignment="center" (tap)="generateQr()"
+                class="primary-btn text-sz-14  h-11 p-3 text-center font-wt-500 rounded-full border-info bg-info text-white font-serif">
+              </label>
+            </StackLayout>
+
+          </StackLayout>
+
+          <StackLayout row="0" *ngIf="isSubFilterSelected(1102)">
+            <StackLayout col="1" class="mt-1">
+              <GridLayout rows="auto,auto" class="bg-searchBg border-1-grey pl-4 mt-5 mx-5">
+                <StackLayout row="0" orientation="horizontal">
+                  <label text="Amount" class="text-sz-14 text-label pt-2" textWrap="true"></label>
+                </StackLayout>
+                <StackLayout row="1" class="pt-2 pb-2">
+                  <TextField keyboardType="number" [(ngModel)]="amount" class="text-black no-underline text-sz-14 mr-2"
+                    verticalAlignment="center">
+                  </TextField>
+                </StackLayout>
+              </GridLayout>
+
+              <label text="Apply" (tap)="addCashEntry(amount)" verticalAlignment="center"
+                class="primary-btn text-sz-14  h-11 p-3 text-center font-wt-500 rounded-full border-info bg-info text-white font-serif">
+              </label>
+            </StackLayout>
+          </StackLayout>
+          <StackLayout row="0" *ngIf="isSubFilterSelected(1103)">
+            <StackLayout col="1" class="mt-1">
+              <GridLayout rows="auto,auto" class="bg-searchBg border-1-grey pl-4 mt-5 mx-5">
+                <StackLayout row="0" orientation="horizontal">
+                  <label text="Amount" class="text-sz-14 text-label pt-2" textWrap="true"></label>
+                </StackLayout>
+                <StackLayout row="1" class="pt-2 pb-2">
+                  <TextField keyboardType="number" [(ngModel)]="amount" class="text-black no-underline text-sz-14 mr-2"
+                    verticalAlignment="center">
+                  </TextField>
+                </StackLayout>
+              </GridLayout>
+              <label text="Request Customer For Payment" (tap)="sendPaymentReqToCustomer(amount)"
+                verticalAlignment="center"
+                class="primary-btn text-sz-14  h-11 p-3 text-center font-wt-500 rounded-full border-info bg-info text-white font-serif">
+              </label>
+            </StackLayout>
+          </StackLayout>
+        </StackLayout>
+      </GridLayout>
+    </GridLayout>
+
+    <GridLayout rows="*" class="mt-10" height="100%" *ngIf="isQrScreen && !isLoading">
+      <GridLayout row="2" class="bg-white">
+        <StackLayout>
+          <StackLayout width="90%" height="100%" radius="10" elevation="5" >
+            <StackLayout class="mt-1">
+              <Label [text]="'Expires in : 0'+ timer.mins+ ':' +timer.sec"*ngIf="!isPending"
+                class="text-red-500 text-center text-sm"></Label>
+
+              <Image *ngIf="qrCodeData && qrCodeData.urls && !isPending" [src]="qrCodeData.urls.qr_code" height="230" width="350"
+                class="qrScannar" stretch="aspectFit">
+              </Image>
+              <FlexBoxLayout justifyContent="center" *ngIf="!isPending">
+                <label text="Check Payment Status" class="primary-btn text-center p-4 font-wt-500"
+                  (tap)="paymentsStatus()">
+                </label>
+              </FlexBoxLayout>
+            </StackLayout>
+          </StackLayout>
+          <FlexboxLayout class="w-full px-5 pt-3" flexDirection="column">
+            <StackLayout class="w-full h-[30] border-bottom">
+              <GridLayout rows="*" columns="auto,*">
+                <StackLayout row="0" col="0">
+                  <label text="Amount" class="text-secondary text-start text-sm"></label>
+                </StackLayout>
+                <StackLayout row="0" col="1" class="text-right place-items-end">
+                  <label [text]="qrCodeData.amount" class="text-secondary  text-sm"></label>
+                </StackLayout>
+              </GridLayout>
+            </StackLayout>
+
+            <StackLayout class="w-full h-[30] mt-3 mb-2">
+              <GridLayout rows="*" columns="auto,*">
+                <StackLayout row="0" col="0">
+                  <label text="Payment Status" class="text-secondary text-start text-sm"></label>
+                </StackLayout>
+                <StackLayout row="0" col="1" class="text-right">
+                  <label [text]="paymentStatus.message || 'Initiated'"
+                    [ngClass]="paymentStatus.status == 1 ? 'text-green-700' : 'text-red-700'" class="text-sm"></label>
+                </StackLayout>
+              </GridLayout>
+            </StackLayout>
+
+
+          </FlexboxLayout>
+        </StackLayout>
+
+        <StackLayout rows="50,275,200,*" class="mt-6" *ngIf="isStatusShow && !isQrScreen">
+          <GridLayout row="0" height="50" class="px-5 mt-6">
+            <label [text]="paymentStatus.message+'!'" class="text-black text-start font-semibold text-3xl mb-2"></label>
+          </GridLayout>
+
+          <StackLayout row="1" class="w-full mt-10 h-[180]" verticalAlignment="center"
+            *ngIf="paymentStatus.status != 4">
+            <Image [src]="paymentStatus.icons" height="180" width="180"></Image>
+          </StackLayout>
+
+          <StackLayout row="2" class="mt-5" *ngIf="paymentStatus.status != 0">
+            <CardView width="90%" radius="30" class="mt-2 mb-5">
+
+
+              <FlexboxLayout class="w-full px-5 pt-3" flexDirection="column">
+                <StackLayout class="w-full h-[30] border-bottom">
+                  <GridLayout rows="*" columns="auto,*">
+                    <StackLayout row="0" col="0">
+                      <label text="Amount" class="text-secondary text-start  text-sm"></label>
+                    </StackLayout>
+                    <StackLayout row="0" col="1" class="text-right place-items-end">
+                      <label [text]="paymentStatus.amount | currency:'INR':'symbol':'1.0-2'"
+                        class="text-secondary  text-sm"></label>
+                    </StackLayout>
+                  </GridLayout>
+                </StackLayout>
+
+                <StackLayout class="w-full h-[30] mt-3 mb-2">
+                  <GridLayout rows="*" columns="auto,*">
+                    <StackLayout row="0" col="0">
+                      <label text="Payment Status" class="text-secondary text-start text-sm"></label>
+                    </StackLayout>
+                    <StackLayout row="0" col="1" class="text-right">
+                      <label [text]="paymentStatus.message"
+                        [ngClass]="paymentStatus.status == 1 ? 'text-green-700' : 'text-red-700'"
+                        class="text-sm"></label>
+                    </StackLayout>
+                  </GridLayout>
+                </StackLayout>
+              </FlexboxLayout>
+            </CardView>
+          </StackLayout>
+        </StackLayout>
+
+      </GridLayout>
+    </GridLayout>
+  </StackLayout>
+
+</GridLayout>

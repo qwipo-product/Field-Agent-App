@@ -1,0 +1,22 @@
+android {
+  compileSdkVersion 35
+  // buildToolsVersion "32.0.0"
+  // ndkVersion ""
+
+  defaultConfig {
+    minSdkVersion 21
+    targetSdkVersion 35
+
+    // Version Information
+    versionCode 1
+    versionName "1.0.0"
+
+
+    generatedDensities = []
+       multiDexEnabled true
+  }
+
+  aaptOptions {
+    additionalParameters "--no-version-vectors"
+  }
+}

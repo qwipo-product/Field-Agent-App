@@ -1,0 +1,497 @@
+/* Browser build: NativeScript layout rules, Android overlays and the demo page around the phone.
+   Loaded before the app's own stylesheet (web/gen/app.css), so app classes override the defaults here. */
+
+/* ---- Fonts --------------------------------------------------------------------------------- */
+
+/* System font on Android. */
+@font-face { font-family: ns-system; font-weight: 300; src: url("fonts/Roboto-Light.ttf") format("truetype"); }
+@font-face { font-family: ns-system; font-weight: 400; src: url("fonts/Roboto-Regular.ttf") format("truetype"); }
+@font-face { font-family: ns-system; font-weight: 500 600; src: url("fonts/Roboto-Medium.ttf") format("truetype"); }
+@font-face { font-family: ns-system; font-weight: 700 900; src: url("fonts/Roboto-Bold.ttf") format("truetype"); }
+/* The app ships src/fonts/Roboto.ttf, which is Roboto Black; "font-sans" text uses it at every weight. */
+@font-face { font-family: Roboto; font-weight: 100 900; src: url("../src/fonts/Roboto.ttf") format("truetype"); }
+@font-face { font-family: "Font Awesome 5 Free"; font-weight: 900; src: url("../src/fonts/fa-solid-900.ttf") format("truetype"); }
+@font-face { font-family: "Font Awesome 5 Free"; font-weight: 400; src: url("../src/fonts/fa-regular-400.ttf") format("truetype"); }
+@font-face { font-family: "Font Awesome 5 Brands"; src: url("../src/fonts/fa-brands-400.ttf") format("truetype"); }
+@font-face { font-family: fa-solid-900; src: url("../src/fonts/fa-solid-900.ttf") format("truetype"); }
+@font-face { font-family: fa-regular-400; src: url("../src/fonts/fa-regular-400.ttf") format("truetype"); }
+@font-face { font-family: fa-brands-400; src: url("../src/fonts/fa-brands-400.ttf") format("truetype"); }
+
+/* ---- Demo page ------------------------------------------------------------------------------ */
+
+:root {
+  --page-bg: #eef0f4;
+  --panel-bg: #ffffff;
+  --panel-text: #1f2430;
+  --panel-muted: #5b6272;
+  --panel-border: #d9dde5;
+  --accent: #114a97;
+  --phone-w: 412px;
+  --phone-h: 892px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page-bg: #14161b;
+    --panel-bg: #1d2027;
+    --panel-text: #e8eaf0;
+    --panel-muted: #a3a9b6;
+    --panel-border: #333845;
+    --accent: #7fb0ff;
+  }
+}
+:root[data-theme="dark"] {
+  --page-bg: #14161b;
+  --panel-bg: #1d2027;
+  --panel-text: #e8eaf0;
+  --panel-muted: #a3a9b6;
+  --panel-border: #333845;
+  --accent: #7fb0ff;
+}
+
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--page-bg);
+  color: var(--panel-text);
+  font-family: ns-system, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.fa-page {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 24px 16px;
+  box-sizing: border-box;
+}
+
+.fa-phone {
+  flex: none;
+  width: calc(var(--phone-w) + 24px);
+  height: calc(var(--phone-h) + 24px);
+  padding: 12px;
+  box-sizing: border-box;
+  border-radius: 44px;
+  background: #0d0e11;
+  box-shadow: 0 0 0 2px #2b2e36, 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+.fa-device {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 32px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #000;
+}
+.fa-statusbar {
+  flex: none;
+  height: 32px;
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #000;
+  color: #fff;
+  font: 500 13px ns-system, sans-serif;
+}
+.fa-statusbar svg { display: block; }
+.fa-status-icons { display: flex; gap: 6px; align-items: center; }
+
+/* The app's screen. Overlays (toasts, dialogs, sheets) are positioned inside it. */
+.fa-screen {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #fff;
+  color: #000;
+  font-family: ns-system, sans-serif;
+  font-size: 14px;
+  line-height: normal;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+.fa-screen > ns-app { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; }
+
+.fa-navbar {
+  flex: none;
+  height: 48px;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 72px;
+}
+.fa-navbar button {
+  width: 48px;
+  height: 40px;
+  border: 0;
+  border-radius: 20px;
+  background: transparent;
+  color: #e6e6e6;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.fa-navbar button:hover { background: rgba(255, 255, 255, 0.12); }
+.fa-navbar button:focus-visible { outline: 2px solid #7fb0ff; outline-offset: 2px; }
+
+.fa-panel {
+  width: 360px;
+  max-width: 100%;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 24px;
+  box-sizing: border-box;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.fa-panel h1 { font-size: 20px; line-height: 1.3; margin: 0 0 8px; text-wrap: balance; }
+.fa-panel h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--panel-muted); margin: 20px 0 8px; }
+.fa-panel p { margin: 0 0 8px; color: var(--panel-muted); }
+.fa-personas { width: 100%; border-collapse: collapse; }
+.fa-personas td { padding: 6px 0; border-top: 1px solid var(--panel-border); vertical-align: top; }
+.fa-personas td:first-child { white-space: nowrap; padding-right: 12px; }
+.fa-personas button {
+  font: 500 14px ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--accent);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.fa-personas small { display: block; color: var(--panel-muted); }
+.fa-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+.fa-actions button, .fa-actions a {
+  font: 500 14px ns-system, sans-serif;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--panel-border);
+  background: transparent;
+  color: var(--panel-text);
+  cursor: pointer;
+  text-decoration: none;
+}
+.fa-actions button:hover, .fa-actions a:hover { border-color: var(--accent); color: var(--accent); }
+.fa-info-toggle { display: none; }
+
+/* Phones: the app fills the screen; the demo notes open from a small button. */
+@media (max-width: 760px), (max-height: 700px) {
+  .fa-page { padding: 0; gap: 0; display: block; height: 100%; }
+  .fa-phone { width: 100%; height: 100%; padding: 0; border-radius: 0; box-shadow: none; }
+  .fa-device { border-radius: 0; }
+  .fa-statusbar { display: none; }
+  .fa-panel {
+    display: none;
+    position: fixed;
+    inset: auto 12px 12px 12px;
+    width: auto;
+    max-height: 80vh;
+    overflow: auto;
+    z-index: 100;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  }
+  .fa-panel.fa-open { display: block; }
+  .fa-info-toggle {
+    display: grid;
+    place-items: center;
+    position: fixed;
+    right: 10px;
+    bottom: 58px;
+    z-index: 101;
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    border: 0;
+    background: rgba(17, 74, 151, 0.92);
+    color: #fff;
+    font: 700 16px ns-system, sans-serif;
+    cursor: pointer;
+  }
+}
+
+/* ---- NativeScript views ------------------------------------------------------------------- */
+
+.ns-view {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0 solid #000;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  background: transparent;
+  position: relative;
+  --ns-ha: initial;
+  --ns-va: initial;
+}
+.ns-proxy { display: contents; }
+.ns-cq { container-type: inline-size; }
+.fa-screen { container-type: size; }
+.ns-collapsed { display: none !important; }
+.ns-hidden { visibility: hidden !important; }
+.ns-disabled { pointer-events: none; }
+.ns-nointeract { pointer-events: none; }
+router-outlet { display: none; }
+
+/* Containers */
+.ns-vstack { display: flex; flex-direction: column; justify-content: var(--ns-va, flex-start); }
+.ns-hstack { display: flex; flex-direction: row; justify-content: var(--ns-ha, flex-start); }
+.ns-grid { display: grid; grid-template-rows: minmax(0, 1fr); grid-template-columns: minmax(0, 1fr); align-content: start; justify-content: start; }
+.ns-flex { display: flex; flex-direction: row; }
+.ns-hwrap { display: flex; flex-flow: row wrap; align-content: flex-start; align-items: flex-start; }
+.ns-vwrap { display: flex; flex-flow: column wrap; align-content: flex-start; align-items: flex-start; }
+.ns-dock-v { display: flex; flex-direction: column; }
+.ns-dock-h { display: flex; flex-direction: row; }
+.ns-absolute { display: block; }
+.ns-absolute > .ns-view { position: absolute; }
+.ns-content, .ns-root { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); }
+.ns-vscroll { display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; }
+.ns-hscroll { display: flex; flex-direction: row; overflow-x: auto; overflow-y: hidden; }
+.ns-listview { display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; }
+.ns-vscroll, .ns-hscroll, .ns-listview { scrollbar-width: thin; overscroll-behavior: contain; }
+
+/* Children of a vertical stack: full width unless aligned; never squeezed (except a scroller's path). */
+:is(.ns-vstack, .ns-vscroll, .ns-listview, .ns-lv-item, .ns-dock-v) > .ns-view,
+:is(.ns-vstack, .ns-vscroll, .ns-listview, .ns-lv-item, .ns-dock-v) > .ns-proxy > .ns-view {
+  flex: 0 0 auto;
+  align-self: var(--ns-ha, stretch);
+}
+/* Children of a horizontal stack: full height unless aligned. */
+:is(.ns-hstack, .ns-hscroll, .ns-dock-h) > .ns-view,
+:is(.ns-hstack, .ns-hscroll, .ns-dock-h) > .ns-proxy > .ns-view {
+  flex: 0 0 auto;
+  align-self: var(--ns-va, stretch);
+}
+/* A horizontal stack offers each child only the width that is left, so text wraps or truncates. */
+.ns-hstack > .ns-view:not([data-ns-fw]), .ns-hstack > .ns-proxy > .ns-view:not([data-ns-fw]) { flex-shrink: 1; }
+:is(.ns-vstack, .ns-dock-v) > .ns-shrink, :is(.ns-vstack, .ns-dock-v) > .ns-proxy > .ns-shrink { flex-shrink: 1; }
+:is(.ns-hstack, .ns-dock-h) > .ns-shrink, :is(.ns-hstack, .ns-dock-h) > .ns-proxy > .ns-shrink { flex-shrink: 1; }
+.ns-vstack > .ns-grow:not(.ns-grid[data-ns-va]), .ns-vstack > .ns-proxy > .ns-grow:not(.ns-grid[data-ns-va]) { flex-grow: 1; }
+.ns-hstack > .ns-hgrow, .ns-hstack > .ns-proxy > .ns-hgrow { flex: 1 1 0; min-width: 0; }
+/* A text field in a horizontal stack takes the width that is left, like an Android EditText. */
+.ns-hstack > .ns-textfield:not([data-ns-fw]), .ns-hstack > .ns-proxy > .ns-textfield:not([data-ns-fw]) { flex: 1 1 auto; min-width: 0; width: 0; }
+.ns-dock-v > .ns-dock-fill, .ns-dock-h > .ns-dock-fill,
+.ns-dock-v > .ns-proxy > .ns-dock-fill, .ns-dock-h > .ns-proxy > .ns-dock-fill { flex: 1 1 auto; }
+
+/* Grid cells */
+:is(.ns-grid, .ns-content, .ns-root) > .ns-view,
+:is(.ns-grid, .ns-content, .ns-root) > .ns-proxy > .ns-view {
+  justify-self: var(--ns-ha, stretch);
+  align-self: var(--ns-va, stretch);
+}
+:is(.ns-content, .ns-root) > .ns-view, :is(.ns-content, .ns-root) > .ns-proxy > .ns-view { grid-area: 1 / 1; }
+/* A stack whose content stretches (grow) fills its cell; one leading to a scroller stays inside it. */
+:is(.ns-grid, .ns-content, .ns-root) > .ns-grow:not(.ns-grid[data-ns-va]):not([data-ns-autorow]),
+:is(.ns-grid, .ns-content, .ns-root) > .ns-proxy > .ns-grow:not(.ns-grid[data-ns-va]):not([data-ns-autorow]) { align-self: stretch; }
+:is(.ns-grid, .ns-content, .ns-root) > .ns-shrink, :is(.ns-grid, .ns-content, .ns-root) > .ns-proxy > .ns-shrink { max-height: 100%; }
+
+/* NativeScript centres a fixed-size view that is left at "stretch". */
+:is(.ns-vstack, .ns-grid, .ns-content, .ns-root) > [data-ns-fw]:not([data-ns-ha]),
+:is(.ns-vstack, .ns-grid, .ns-content, .ns-root) > .ns-proxy > [data-ns-fw]:not([data-ns-ha]) { margin-left: auto; margin-right: auto; }
+:is(.ns-hstack, .ns-grid, .ns-content, .ns-root) > [data-ns-fh]:not([data-ns-va]),
+:is(.ns-hstack, .ns-grid, .ns-content, .ns-root) > .ns-proxy > [data-ns-fh]:not([data-ns-va]) { margin-top: auto; margin-bottom: auto; }
+
+/* Pages fill the outlet. */
+page-router-outlet { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); min-height: 0; }
+page-router-outlet > .ns-proxy { display: flex; flex-direction: column; grid-area: 1 / 1; min-height: 0; background: #fff; }
+page-router-outlet > .ns-proxy > .ns-view { flex: 1 1 0; }
+page-router-outlet > .ns-proxy > .ns-actionbar { flex: none; }
+.ns-root { height: 100%; }
+.ns-root > page-router-outlet { grid-area: 1 / 1; }
+.ns-root > .ns-shade { grid-area: 1 / 1; position: relative; z-index: 1; opacity: 0; }
+.ns-root > .ns-root-overlay, .ns-root > .ns-root-overlay > .ns-view { z-index: 2; }
+
+/* Leaves */
+.ns-label {
+  display: block;
+  white-space: pre;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+}
+.ns-label.ns-wrap { white-space: pre-wrap; overflow-wrap: anywhere; }
+.ns-span, .ns-fs { display: inline; }
+.ns-button {
+  display: block;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  min-height: 0;
+  white-space: nowrap;
+}
+/* Android's button minimum size, unless the app sizes it. */
+.ns-button:not([data-ns-fw]) { min-width: 88px; }
+.ns-button:not([data-ns-fh]) { min-height: 48px; }
+.ns-textfield, .ns-textview {
+  display: block;
+  font-size: 18px;
+  padding: 11px 4px;
+  outline: none;
+  appearance: none;
+  border-radius: 0;
+  caret-color: #114a97;
+}
+.ns-textfield.ns-underline { box-shadow: inset 0 -1px 0 #8a8a8a; }
+.ns-textfield.ns-underline:focus { box-shadow: inset 0 -2px 0 #114a97; }
+.ns-textfield::placeholder, .ns-textview::placeholder { color: var(--ns-placeholder, #6d6d6d); opacity: 1; }
+.ns-textview { resize: none; }
+.ns-image { display: block; object-fit: contain; }
+.ns-image.ns-nosrc { visibility: hidden; }
+.ns-webview { display: block; width: 100%; border: 0; }
+.ns-switch { appearance: none; width: 36px; height: 20px; border-radius: 10px; background: #bdbdbd; position: relative; cursor: pointer; margin: 4px; }
+.ns-switch::after { content: ""; position: absolute; top: -3px; left: -3px; width: 26px; height: 26px; border-radius: 13px; background: #f1f1f1; box-shadow: 0 1px 3px rgba(0,0,0,.4); transition: left .15s; }
+.ns-switch:checked { background: #8fa9d6; }
+.ns-switch:checked::after { left: 13px; background: #114a97; }
+.ns-date { font-size: 16px; padding: 8px; }
+.ns-activity { display: none; width: 40px; height: 40px; }
+.ns-activity.ns-busy { display: block; }
+.ns-activity::before {
+  content: "";
+  display: block;
+  width: 32px;
+  height: 32px;
+  margin: 4px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 4px solid currentColor;
+  border-color: currentColor transparent transparent transparent;
+  animation: ns-spin 0.9s linear infinite;
+}
+@keyframes ns-spin { to { transform: rotate(360deg); } }
+
+.ns-actionbar {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  padding: 0 16px 0 0;
+  background: #f4f4f4;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+  z-index: 1;
+}
+.ns-actionbar > .ns-label { flex: 1; text-align: center; padding-right: 56px; }
+.ns-navbutton { width: 56px; height: 56px; flex: none; cursor: pointer; display: grid; place-items: center; }
+.ns-navbutton::before {
+  content: "";
+  width: 28px;
+  height: 20px;
+  background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 20' fill='none' stroke='%23777' stroke-width='1.6' stroke-linejoin='round'%3E%3Cpath d='M10 2 2 10l8 8v-5h16V7H10z'/%3E%3C/svg%3E");
+}
+.ns-actionitem { display: none; }
+
+.ns-lv-item { display: flex; flex-direction: column; border-bottom: 1px solid #e0e0e0; }
+
+[data-ns-tap], .ns-view[role="button"] { cursor: pointer; }
+
+/* ---- Android overlays ----------------------------------------------------------------------- */
+
+.ns-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  z-index: 50;
+  max-width: 82%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px 10px 12px;
+  border-radius: 24px;
+  background: #ecebf3;
+  color: #1b1b1f;
+  font: 400 15px/1.3 ns-system, sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  animation: ns-fade-in 0.2s ease-out;
+}
+.ns-toast.ns-leaving { opacity: 0; transition: opacity 0.25s; }
+.ns-toast-icon { width: 24px; height: 24px; border-radius: 5px; flex: none; }
+
+.ns-snackbar {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 4px;
+  background: #323232;
+  color: #fff;
+  font: 400 14px ns-system, sans-serif;
+  animation: ns-fade-in 0.2s ease-out;
+}
+.ns-snackbar-action { background: none; border: 0; color: #ff4081; font: 500 14px ns-system, sans-serif; text-transform: uppercase; cursor: pointer; }
+
+.ns-loader, .ns-dialog-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  animation: ns-fade-in 0.15s ease-out;
+}
+.ns-loader-box {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-width: 220px;
+  padding: 22px 24px;
+  border-radius: 6px;
+  background: #fff;
+  color: #212121;
+  font: 400 16px ns-system, sans-serif;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+}
+.ns-loader-spinner {
+  width: 36px;
+  height: 36px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 4px solid #3f51b5;
+  border-right-color: transparent;
+  animation: ns-spin 0.9s linear infinite;
+  flex: none;
+}
+
+.ns-fancy { width: 288px; border-radius: 6px; overflow: hidden; background: #fff; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35); animation: ns-pop 0.2s ease-out; }
+.ns-fancy-head { height: 84px; display: grid; place-items: center; clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%); }
+.ns-fancy-success { --fancy: #8db36e; }
+.ns-fancy-warning { --fancy: #e8a33d; }
+.ns-fancy-error { --fancy: #d9534f; }
+.ns-fancy-info { --fancy: #5b9bd5; }
+.ns-fancy-head { background: var(--fancy); }
+.ns-fancy-body { padding: 18px 16px 10px; text-align: center; font-family: ns-system, sans-serif; }
+.ns-fancy-title { font: 700 18px ns-system, sans-serif; color: #333; margin-bottom: 12px; }
+.ns-fancy-message { font: 400 15px/1.4 ns-system, sans-serif; color: #444; text-align: left; margin: 0 4px 14px; }
+.ns-fancy-button {
+  width: 100%;
+  height: 40px;
+  border-radius: 6px;
+  border: 1px solid var(--fancy);
+  background: #fff;
+  color: var(--fancy);
+  font: 400 16px ns-system, sans-serif;
+  cursor: pointer;
+}
+
+.ns-dialog { width: 300px; padding: 24px 24px 12px; border-radius: 28px; background: #fff; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35); font-family: ns-system, sans-serif; animation: ns-pop 0.2s ease-out; }
+.ns-dialog-title { font: 400 22px ns-system, sans-serif; color: #1b1b1f; margin-bottom: 12px; }
+.ns-dialog-message { font: 400 15px/1.45 ns-system, sans-serif; color: #45464f; margin-bottom: 18px; }
+.ns-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.ns-dialog-button { background: none; border: 0; padding: 10px 12px; border-radius: 20px; color: #114a97; font: 500 14px ns-system, sans-serif; cursor: pointer; }
+.ns-dialog-button:hover { background: rgba(17, 74, 151, 0.08); }
+
+@keyframes ns-fade-in { from { opacity: 0; } }
+@keyframes ns-pop { from { transform: scale(0.92); opacity: 0; } }

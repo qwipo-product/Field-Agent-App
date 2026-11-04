@@ -1,0 +1,169 @@
+<GridLayout rows="*" class="bg-searchBg">
+
+    <ScrollView row="0" class="pageLogin" height="100%" iosOverflowSafeAreaEnabled="false" *ngIf="isLoading">
+        <StackLayout class="w-100" horizontalAlignment="center" verticalAlignment="center">
+            <ActivityIndicator [busy]="isLoading" width="50" class="activity-indicator c-white"></ActivityIndicator>
+        </StackLayout>
+    </ScrollView>
+
+    <GridLayout row="0" rows="40,auto,*" *ngIf="!isLoading">
+        <GridLayout columns="*,*" row="0" class="mr-2" verticalAlignment="top">
+            <StackLayout col="0" orientation="horizontal" horizontalAlignment="left" class="text-left">
+                <Switch width="50" class="text-info mt-1" [(ngModel)]="isOrderWise"
+                    (change)="onSwitchToggled(isOrderWise)">
+                </Switch>
+                <Label text="Order Wise" *ngIf="!isOrderWise" class="famedium text-black text-sz-14 mt-1"
+                    verticalAlignment="center"></Label>
+                <Label text="Product Wise" *ngIf="isOrderWise" class="famedium text-black text-sz-14 mt-1"
+                    verticalAlignment="center"></Label>
+            </StackLayout>
+        </GridLayout>
+
+        <GridLayout row="2" rows="*" height="100%" *ngIf="!isOrderWise">
+            <StackLayout>
+                <ListView row="1" height="100%" class="h-[100%] w-[100%]" [items]="hopOrders" id="listViewId"
+                    separatorColor="transparent">
+                    <ng-template tkListItemTemplate let-order="item" let-itemIndex="index">
+                        <StackLayout class="px-2">
+                            <orders-card [order]="order">
+                            </orders-card>
+                        </StackLayout>
+                    </ng-template>
+                </ListView>
+            </StackLayout>
+        </GridLayout>
+
+
+
+        <StackLayout row="1" class="p-2 w-[98%]" *ngIf="isOrderWise">
+            <GridLayout columns="*,50" class="bg-white rounded-xl h5">
+                <StackLayout col="0" orientation="horizontal" class="pl-2 pt-2 pb-2">
+                    <Label text="&#xf002;" class="fas text-sz-16 text-secondary ml-2" horizontalAlignment="right"
+                        verticalAlignment="center"></Label>
+                    <TextField class="text-sz-14 ml-2 text-black font-wt-800 no-underline pt-2" hint="Search here"
+                        [(ngModel)]="searchText" (ngModelChange)="searchDebounce($event)"></TextField>
+                </StackLayout>
+                <StackLayout col="1" horizontalAlignment="right" verticalAlignment="center"
+                    *ngIf="searchText && searchText.length > 1" (tap)="clearText()">
+                    <Label text="&#xf057;" class="fas text-sz-14 text-black text-right mr-2"
+                        horizontalAlignment="right"></Label>
+                </StackLayout>
+            </GridLayout>
+        </StackLayout>
+
+
+        <GridLayout row="2" rows="*" height="100%" *ngIf="isOrderWise" class="mt-2">
+            <ListView row="1" height="100%" class="h-[100%] w-[100%]" [items]="hopProducts" id="listViewId"
+                separatorColor="transparent">
+                <ng-template tkListItemTemplate let-product="item" let-itemIndex="index">
+                    <StackLayout class="px-2 ">
+                        <GridLayout rows="*,*,*" columns="*" sdkExampleTitle sdkToggleNavButton
+                            class="bg-white rounded-lg elevation m-2">
+                            <StackLayout row="0" class="p-2" orientation="horizontal">
+                                <StackLayout orientation="horizontal" class="w-[70%]">
+                                    <Label [text]="product.itemName+'- MRP '+product.mrp" textWrap="true"
+                                        class="text-sz-16 text-black leading-snug font-semibold font-sans"></Label>
+                                </StackLayout>
+                                <StackLayout orientation="horizontal" class="w-[30%] right mr-2"
+                                    horizontalAlignment="center">
+                                    <StackLayout orientation="horizontal"
+                                        class="br-30 bg-info text-white ml-1" horizontalAlignment="center"
+                                        *ngIf="showAdminDetails && isQwipoPickUp && product.vendorBusinessTypeId == 5 && currentHop.pointMode != 3 && currentHop.pointType != 2">
+                                        <Label text="Edit" verticalAlignment="center"
+                                            (tap)="modifyOrderProduct(product)"
+                                            class="text-sz-11  h-10 p-3 text-center w-[70%] font-wt-500 rounded-full border-info bg-info text-white font-serif"></Label>
+                                    </StackLayout>
+
+                                    <StackLayout orientation="horizontal"
+                                        class="br-30 bg-info text-white ml-1" horizontalAlignment="center"
+                                        *ngIf="showAdminDetails && isVendorDrop && currentHop.pointType == 3 && currentHop.pointType != 2 ">
+                                        <Label text="Edit" verticalAlignment="center"
+                                            (tap)="modifyOrderProduct(product)"
+                                            class="text-sz-11  h-10 p-3 text-center w-[70%] font-wt-500 rounded-full border-info bg-info text-white font-serif"></Label>
+                                    </StackLayout>
+
+                                    <StackLayout orientation="horizontal"
+                                        class="br-30 bg-info text-white ml-1" horizontalAlignment="center"
+                                        *ngIf="showAdminDetails && isQwipoLite && currentHop.pointMode == 1 && currentHop.pointType == 1 ">
+                                        <Label text="Edit" verticalAlignment="center"
+                                            (tap)="modifyOrderProduct(product)"
+                                            class="text-sz-11  h-10 p-3 text-center w-[70%] font-wt-500 rounded-full border-info bg-info text-white font-serif"></Label>
+                                    </StackLayout>
+
+
+                                </StackLayout>
+                            </StackLayout>
+                            <StackLayout row="1" class="p-2 border-top-grey" orientation="horizontal">
+                                <StackLayout orientation="vertical" class="w-[100%]">
+                                    <FlexBoxLayout row="1" flexDirection="row">
+                                        <StackLayout class="w-[70%]">
+                                            <FlexboxLayout justifyContent="space-between">
+                                                <StackLayout>
+                                                    <Label text="Cases"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1">
+                                                    </Label>
+                                                    <Label text="Pieces" textWrap="true"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1"></Label>
+
+                                                    <Label text="Sale Value"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1">
+                                                    </Label>
+                                                    <Label text="Ordered Qty"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1">
+                                                    </Label>
+                                                    <Label text="Invoiced Qty"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1">
+                                                    </Label>
+
+
+                                                </StackLayout>
+                                                <StackLayout>
+                                                    <Label [text]="product.cases" textWrap="true"
+                                                        horizontalAlignment="right"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1"></Label>
+                                                    <Label [text]="product.pieces" horizontalAlignment="right"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1">
+                                                    </Label>
+                                                    <Label [text]="product.saleValue" textWrap="true"
+                                                        horizontalAlignment="right"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1"></Label>
+                                                    <Label [text]="product.quantity" horizontalAlignment="right"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1">
+                                                    </Label>
+                                                    <Label [text]="product.invoicedQty" horizontalAlignment="right"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1">
+                                                    </Label>
+
+                                                </StackLayout>
+                                            </FlexboxLayout>
+                                        </StackLayout>
+                                        <StackLayout class="w-[29%] right ml-5" orientation="vertical"
+                                            horizontalAlignment="right" verticalAlignment="center">
+                                            <StackLayout class="column imagegrid" height="100%" width=""
+                                                horizontalAlignment="right" class="m-1">
+                                                <Image class="rounded-lg p-1 br-30 bg-searchBg mr-1 ml-2"
+                                                    height="100" width="100" [src]="product.imageUrl"
+                                                    stretch="aspectFill" horizontalAlignment="right"
+                                                    src="~/images/ph.png">
+                                                </Image>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </FlexBoxLayout>
+                                </StackLayout>
+                            </StackLayout>
+                            <StackLayout row="2" class="p-2 border-top-grey" orientation="horizontal">
+                                <StackLayout verticalAlignment="center">
+                                    <label textWrap="true" [text]="'Seller : '+product.vendorName"
+                                        class="text-raleway text-sz-14 text-black font-medium "></label>
+                                </StackLayout>
+                            </StackLayout>
+
+                        </GridLayout>
+
+                    </StackLayout>
+                </ng-template>
+            </ListView>
+        </GridLayout>
+
+    </GridLayout>
+</GridLayout>

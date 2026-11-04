@@ -1,0 +1,54 @@
+<GridLayout rows="*" class="bg-searchBg">
+    <StackLayout rows="*,*">
+        <StackLayout row="0" orientation="horizontal" class="p-2" (tap)="goBack()">
+            <Label text="&#xf053;" class="back-arrow"></Label>
+            <Label [text]="hopDetails.pointBusinessName"
+                class="title"></Label>
+        </StackLayout>
+        <StackLayout row="1" columns="*,auto" class="p-2" orientation="horizontal" verticalAlignment="top">
+            <StackLayout orientation="horizontal" class="w-full" horizontalAlignment="center"
+                verticalAlignment="center">
+
+                <StackLayout orientation="horizontal" horizontalAlignment="center" *ngIf="!isCustomerDelivery">
+                    <StackLayout (tap)="showSummary()"
+                        [ngClass]="isSummaryActive ? 'rounded-lg bg-info text-sz-14 w-[50%] h-10 font-medium leading-normal text-white m-2 p-2' : 'rounded-lg text-sz-14 w-[50%] h-10 font-medium leading-normal text-black bg-white m-2 p-2 border-1-black'">
+                        <Label text="Summary" class="text-center text-sz-16 " verticalAlignment="center"></Label>
+                    </StackLayout>
+                    <StackLayout (tap)="showProducts()"
+                        [ngClass]="isProductsActive ? 'rounded-lg bg-info text-sz-14 w-[50%] h-10 font-medium leading-normal text-white m-2 p-2' : 'rounded-lg text-sz-14 w-[50%] h-10 font-medium leading-normal text-black bg-white m-2 p-2 border-1-black'">
+                        <Label text="Products" class="text-center text-sz-16" verticalAlignment="center"></Label>
+                    </StackLayout>
+                </StackLayout>
+
+                <StackLayout orientation="horizontal" horizontalAlignment="center" *ngIf="isCustomerDelivery">
+                    <StackLayout (tap)="showSummary()"
+                        [ngClass]="isSummaryActive ? 'rounded-lg bg-info text-sz-14 w-[30%] h-10 font-medium leading-normal text-white m-2 p-2' : 'rounded-lg text-sz-14 w-[30%] h-10 font-medium leading-normal text-black bg-white m-2 p-2 border-1-black'">
+                        <Label text="Summary" class="text-center text-sz-16 " verticalAlignment="center"></Label>
+                    </StackLayout>
+                    <StackLayout (tap)="showProducts()"
+                        [ngClass]="isProductsActive ? 'rounded-lg bg-info text-sz-14 w-[30%] h-10 font-medium leading-normal text-white m-2 p-2' : 'rounded-lg text-sz-14 w-[30%] h-10 font-medium leading-normal text-black bg-white m-2 p-2 border-1-black'">
+                        <Label text="Products" class="text-center text-sz-16" verticalAlignment="center"></Label>
+                    </StackLayout>
+                    <StackLayout (tap)="showReturns()"
+                        [ngClass]="isReturnsActive ? 'rounded-lg bg-info text-sz-14 w-[30%] h-10 font-medium leading-normal text-white m-2 p-2' : 'rounded-lg text-sz-14 w-[30%] h-10 font-medium leading-normal text-black bg-white m-2 p-2 border-1-black'">
+                        <Label text="Returns" class="text-center text-sz-16" verticalAlignment="center"></Label>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+        <StackLayout class="mt-2">
+            <StackLayout>
+                <StackLayout *ngIf="isSummaryActive">
+                    <stop-summary></stop-summary>
+                </StackLayout>
+                <StackLayout *ngIf="isProductsActive">
+                    <admin-product-view *ngIf="showAdminDetails"></admin-product-view>
+                    <de-product-view *ngIf="!showAdminDetails"></de-product-view>
+                </StackLayout>
+                <StackLayout *ngIf="isReturnsActive">
+                    <returns></returns>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </StackLayout>
+</GridLayout>

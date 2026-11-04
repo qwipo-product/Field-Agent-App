@@ -1,0 +1,41 @@
+<GridLayout rows="auto,*,50" class="bg-searchBg">
+    <GridLayout row="0" rows="auto,*">
+        <StackLayout row="0" orientation="horizontal" class="p-2" (tap)="myInfo()">
+            <label text="&#xf053;" class="back-arrow"></label>
+            <label text="Profile" class="title"></label>
+        </StackLayout>
+        <FlexboxLayout row="1" flexDirection="column" class="m-5" alignItems="center" verticalAlignment="top">
+            <FlexboxLayout width="120" class="self-center justify-center">
+                <image src="~/images/redesign/blank-image.jpg" height="120" width="120" class="rounded-full"></image>
+            </FlexboxLayout>
+        </FlexboxLayout>
+    </GridLayout>
+    <GridLayout row="1" rows="auto,10,auto,10,auto,10,auto,10,auto" class="p-5">
+        <StackLayout row="0" rows="*,*" class="p-4 border-1-grey bg-white">
+            <label row="0" text="Name" class="text-sz-12 text-textMuted self-center"></label>
+            <label row="1" [text]="fieldAgent.name" class="py-1 pt-2  text-sz-14 text-black self-center"></label>
+        </StackLayout>
+        <StackLayout row="2" rows="*,*" class="p-4 border-1-grey bg-white">
+            <label row="0" text="Mobile Number" class="text-sz-12 text-textMuted self-center"></label>
+            <label row="1" [text]="fieldAgent?.mobileNumber"
+                class="py-1 pt-2 text-sz-14 text-black self-center"></label>
+        </StackLayout>
+        <StackLayout row="4" rows="*,*" class="p-4 border-1-grey bg-white">
+            <label row="0" text="Email Id" class="text-sz-12 text-textMuted self-center"></label>
+            <label row="1" [text]="fieldAgent?.email" class="py-1 pt-2 text-sz-14 text-black self-center"></label>
+        </StackLayout>
+        <StackLayout row="6" rows="*,*" class="p-4 border-1-grey bg-white">
+            <label row="0" text="Supplier Name" class="text-sz-12 text-textMuted self-center"></label>
+            <label row="1" [text]="fieldAgent?.supplierName"
+                class="py-1 pt-2 text-sz-14 text-black self-center"></label>
+        </StackLayout>
+        <StackLayout row="8" rows="*,*" class="p-4 border-1-grey bg-white">
+            <label row="0" text="Address" class="text-sz-12 text-textMuted self-center"></label>
+            <label row="1" [text]="fieldAgentAddress" textWrap="true"
+                class="py-1 pt-2 text-sz-14 text-black self-center"></label>
+        </StackLayout>
+    </GridLayout>
+    <StackLayout row="2" verticalAlignment="bottom" horizontalAlignment="center">
+        <label text="v {{appVersion}}" class="text-sz-12 text-textMuted p-2"></label>
+    </StackLayout>
+</GridLayout>

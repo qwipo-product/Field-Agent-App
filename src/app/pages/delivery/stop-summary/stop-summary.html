@@ -1,0 +1,290 @@
+<StackLayout>
+    <GridLayout rows="*,auto">
+
+        <StackLayout row="0" rows="auto,*" class="pr-2" verticalAlignment="top">
+            <StackLayout row="0" orientation="horizontal" horizontalAlignment="right"
+                *ngIf="showAdminDetails && hopSummary?.pointMode == 1 && hopSummary?.pointType == 3">
+                <StackLayout orientation="horizontal" class="br-30 bg-white border-1 bg-grey" width="auto" height="32">
+                    <StackLayout orientation="horizontal" verticalAlignment="center" class="p-1" (tap)="adminFilter()">
+                        <Label text="Action" textWrap="true"
+                            class="text-black text-sz-14 font-medium text-center pl-1 pr-1"></Label>
+                        <Label text="&#xf0d7;" class="fas text-sz-14 text-black p-1"></Label>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+
+            <StackLayout row="0" class="pr-2" verticalAlignment="top" orientation="horizontal" horizontalAlignment="right"
+                *ngIf="!showAdminDetails && hopSummary?.pointMode == 2 && hopSummary?.pointType == 2 && hopSummary?.hopStatus == 1">
+
+                <StackLayout orientation="horizontal" horizontalAlignment="right" class="mx-2" *ngIf="hopSummary?.source == 1">
+                    <StackLayout orientation="horizontal" class="br-30 bg-white border-1 bg-grey" width="auto"
+                        height="32" (tap)="reAttempt()">
+                        <StackLayout orientation="horizontal" verticalAlignment="center" class="p-1">
+                            <Label text="Re-attempt" textWrap="true"
+                                class="text-black text-sz-14 font-medium text-center pl-1 pr-1"></Label>
+                            <Label text="&#xf0d7;" class="fas text-sz-14 text-black p-1"></Label>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+
+                <StackLayout orientation="horizontal" horizontalAlignment="right">
+                    <StackLayout orientation="horizontal" class="br-30 bg-white border-1 bg-grey" width="auto"
+                        height="32">
+                        <StackLayout orientation="horizontal" verticalAlignment="center" class="p-1"
+                            (tap)="openCollectionBottomSheet()">
+                            <Label text="Action" textWrap="true"
+                                class="text-black text-sz-14 font-medium text-center pl-1 pr-1"></Label>
+                            <Label text="&#xf0d7;" class="fas text-sz-14 text-black p-1"></Label>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+
+            <StackLayout row="1" *ngIf="isLoading">
+                <ScrollView class="pageLogin" height="100%" iosOverflowSafeAreaEnabled="false" *ngIf="isLoading">
+                    <StackLayout class="w-100" horizontalAlignment="center" verticalAlignment="center">
+                        <ActivityIndicator [busy]="isLoading" width="50" class="activity-indicator"></ActivityIndicator>
+                        <Label text="Loading...." class="c-gray text-center font-medium text-sz-14 pl-3"
+                            textWrap="true"></Label>
+                    </StackLayout>
+                </ScrollView>
+            </StackLayout>
+
+            <StackLayout row="1" rows="*,*" class="pt-2" *ngIf="!isLoading">
+                <StackLayout rows="*,*" class="px-2">
+                    <StackLayout row="0" rows="*">
+                        <StackLayout row="0" rows="*,*,*" columns="*" sdkExampleTitle sdkToggleNavButton
+                            class="bg-white m-2 rounded-lg elevation">
+                            <StackLayout row="0" class="p-2">
+                                <label text="Hop Details" textWrap="true" verticalAlignment="center"
+                                    class="text-black text-sz-16 font-wt-500 text-serif "></label>
+                            </StackLayout>
+                            <StackLayout row="1" class="p-2 border-top-grey" orientation="horizontal">
+                                <StackLayout orientation="horizontal" class="w-[50%]">
+                                    <StackLayout orientation="vertical" class="w-[50%]">
+                                        <label textWrap="true" [text]="(hopSummary?.pointMode | pointModeLabel)"
+                                            class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                        <label textWrap="true" text="Weight"
+                                            class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                    </StackLayout>
+                                    <StackLayout orientation="vertical" class="w-[50%]">
+                                        <label text="1"
+                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                        <label [text]="hopSummary?.weight"
+                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                    </StackLayout>
+                                </StackLayout>
+                                <StackLayout orientation="horizontal" class="w-[50%]">
+                                    <StackLayout orientation="vertical" class="w-[50%]">
+                                        <label textWrap="true" text="Products"
+                                            class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                        <label textWrap="true" text="Status"
+                                            class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                    </StackLayout>
+                                    <StackLayout orientation="vertical" horizontalAlignment="right" class="w-[50%]">
+                                        <label [text]="hopSummary.skusCount" horizontalAlignment="right"
+                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                        <label [text]="(hopSummary.hopStatus | hopStatusLabel)" horizontalAlignment="right"
+                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                    </StackLayout>
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+
+
+                    <StackLayout row="1" rows="*" class="mt-5"
+                        *ngIf="hopSummary.pointMode==3 && hopSummary.pointType==1 && hopSummary.source == 4">
+                        <StackLayout row="0" rows="auto,*,*" class="bg-white m-2 rounded-lg elevation"
+                            orientation="vertical">
+                            <StackLayout row="0" class="p-2 border-top-grey" orientation="horizontal">
+                                <StackLayout orientation="vertical" class="w-[60%]">
+                                    <label text="Hop Collections" textWrap="true"
+                                        class="text-black text-sz-16 font-wt-500 text-serif"></label>
+                                </StackLayout>
+                            </StackLayout>
+                            <StackLayout row="1" class="p-2 border-top-grey" orientation="horizontal">
+                                <StackLayout orientation="horizontal" class="w-[100%]">
+                                    <StackLayout orientation="vertical" class="w-[50%]">
+                                        <label textWrap="true" text="Dispatch Value" class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                        <label textWrap="true" text="Returns" class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                        <label textWrap="true" text="COD Collections" class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                        <label textWrap="true" text="Online Payments" class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                        <label textWrap="true" text="Balance" class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                    </StackLayout>
+                                    <StackLayout orientation="vertical" class="w-[50%]">
+                                        <label [text]="qffReturnHopSummary?.dispatchValue" horizontalAlignment="right"
+                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                        <label [text]="qffReturnHopSummary?.returnValue" horizontalAlignment="right"
+                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                        <label [text]="qffReturnHopSummary?.cash" horizontalAlignment="right"
+                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                        <label [text]="qffReturnHopSummary?.onlinePayment" horizontalAlignment="right"
+                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                        <label [text]="qffReturnHopSummary?.balance" horizontalAlignment="right"
+                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                    </StackLayout>
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+
+
+                    <StackLayout row="1" rows="*" class="mt-5"
+                        *ngIf="hopSummary.pointMode!=2 && hopSummary.pointType!=2 && hopSummary.source != 4">
+                        <StackLayout row="0" rows="auto,*,*" class="bg-white m-2 rounded-lg elevation"
+                            orientation="vertical">
+                            <StackLayout row="0" class="p-2 border-top-grey" orientation="horizontal">
+                                <StackLayout orientation="vertical" class="w-[60%]">
+                                    <label text="Hop Collections" textWrap="true"
+                                        class="text-black text-sz-16 font-wt-500 text-serif"></label>
+                                </StackLayout>
+                            </StackLayout>
+                            <StackLayout row="1" class="p-2 border-top-grey" orientation="horizontal">
+                                <StackLayout orientation="horizontal" class="w-[100%]">
+                                    <StackLayout orientation="vertical" class="w-[50%]">
+                                        <label textWrap="true" text="Gross Amount"
+                                            *ngIf="hopSummary?.dispatchValue"
+                                            class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                        <label textWrap="true" text="Customer Returns"
+                                            *ngIf="hopSummary?.customerReturns"
+                                            class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                        <label textWrap="true" text="Customer COD Collections"
+                                            *ngIf="hopSummary?.cashCollections"
+                                            class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                        <label textWrap="true" text="Customer Online Payments"
+                                            *ngIf="hopSummary?.onlinePayments"
+                                            class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                    </StackLayout>
+                                    <StackLayout orientation="vertical" class="w-[50%]">
+                                        <label [text]="hopSummary.dispatchValue"
+                                            horizontalAlignment="right"
+                                            *ngIf="hopSummary.dispatchValue"
+                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                        <label [text]="hopSummary.customerReturns"
+                                            horizontalAlignment="right"
+                                            *ngIf="hopSummary.customerReturns"
+                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                        <label [text]="hopSummary?.cashCollections"
+                                            horizontalAlignment="right"
+                                            *ngIf="hopSummary?.cashCollections"
+                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                        <label [text]="hopSummary?.onlinePayments"
+                                            horizontalAlignment="right"
+                                            *ngIf="hopSummary.onlinePayments"
+                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                    </StackLayout>
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+
+
+
+
+
+                    <StackLayout row="1" rows="*" class="mt-5"
+                        *ngIf="hopSummary.pointMode==2 && hopSummary.pointType==2">
+                        <StackLayout row="0" rows="auto,*,*" class="bg-white m-2 rounded-lg elevation"
+                            orientation="vertical">
+                            <StackLayout row="0" class="p-2 border-top-grey" orientation="horizontal">
+                                <StackLayout orientation="vertical" class="w-[60%]">
+                                    <label text="Hop Collections" textWrap="true"
+                                        class="text-black text-sz-16 font-wt-500 text-serif"></label>
+                                </StackLayout>
+                                <StackLayout orientation="horizontal" horizontalAlignment="right" class="w-[40%]"
+                                    (tap)="refreshCollections()">
+                                    <label text="Refresh" *ngIf="!showRefreshing" textWrap="true"
+                                        class="text-raleway text-right text-sz-14 text-black font-medium"
+                                        horizontalAlignment="right"></label>
+                                    <label text="Refreshing ..." *ngIf="showRefreshing" textWrap="true"
+                                        class="text-raleway text-right text-sz-14 text-black font-medium"
+                                        horizontalAlignment="right"></label>
+                                    <Label text="&#xf021;" class="fas pl-2 text-right text-sz-14 text-black"
+                                        horizontalAlignment="right"></Label>
+                                </StackLayout>
+                            </StackLayout>
+                            <StackLayout row="1" class="p-2 border-top-grey" orientation="horizontal">
+                                <StackLayout orientation="horizontal" class="w-[50%]">
+                                    <StackLayout orientation="vertical" class="w-[50%]">
+                                        <label textWrap="true" text="Cash"
+                                            class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                        <label textWrap="true" text="Returns"
+                                            class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                    </StackLayout>
+                                    <StackLayout orientation="vertical" class="w-[50%]">
+                                        <label [text]="customerDeliverySummary?.cod"
+                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                        <label [text]="customerDeliverySummary?.returnAmount "
+                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                    </StackLayout>
+                                </StackLayout>
+                                <StackLayout orientation="horizontal" class="w-[50%]">
+                                    <StackLayout orientation="vertical" class="w-[50%]">
+                                        <label textWrap="true" text="Online"
+                                            class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                        <label textWrap="true" text="Balance"
+                                            class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                    </StackLayout>
+                                    <StackLayout orientation="vertical" horizontalAlignment="right" class="w-[50%]">
+                                        <label [text]="customerDeliverySummary?.onlinePayment"
+                                            horizontalAlignment="right"
+                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                        <label [text]="customerDeliverySummary?.balance " horizontalAlignment="right"
+                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                    </StackLayout>
+                                </StackLayout>
+                            </StackLayout>
+                            <StackLayout row="2" class="p-2 border-top-grey" orientation="horizontal">
+                                <StackLayout orientation="vertical" class="w-[50%]">
+                                    <label text="Retailer Dispatch Value" textWrap="true"
+                                        class="text-raleway text-sz-14 text-black font-medium"></label>
+                                </StackLayout>
+                                <StackLayout orientation="vertical" class="w-[50%]">
+                                    <label [text]="customerDeliverySummary?.orderAmount" textWrap="true"
+                                        class="text-raleway text-sz-14 text-black font-medium"
+                                        horizontalAlignment="right"></label>
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+
+
+
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+
+
+
+        <StackLayout row="2" height="70" verticalAlignment="bottom"
+            class="mb-30" *ngIf="!isLoading">
+            <GridLayout rows="*" class="primary-btn2 float-grid" height="50" orientation="horizontal"
+                verticalAlignment="center"
+                (tap)="updateHopStatus(hopSummary.hopId , hopSummary.hopStatus,hopSummary.otp)"
+                *ngIf="!showAdminDetails && hopSummary.hopStatus != 2">
+                <label text="Complete" horizontalAlignment="center" verticalAlignment="center"
+                    class="text-sz-14 fabold"></label>
+            </GridLayout>
+            <GridLayout rows="*" class="primary-btn2 float-grid" height="50" orientation="horizontal"
+                verticalAlignment="center"
+                (tap)="updateHopStatus(hopSummary.hopId , hopSummary.hopStatus,hopSummary.otp)"
+                *ngIf="isVendorDrop && showAdminDetails && hopSummary.hopStatus != 2">
+                <label text="Complete" horizontalAlignment="center" verticalAlignment="center"
+                    class="text-sz-14 fabold"></label>
+            </GridLayout>
+            <GridLayout rows="*" class="secondary-btn2 float-grid" height="50" orientation="horizontal"
+                verticalAlignment="center" *ngIf="!showAdminDetails && hopSummary.hopStatus == 2">
+                <label text="Completed" horizontalAlignment="center" verticalAlignment="center"
+                    class="text-sz-14 fabold"></label>
+            </GridLayout>
+            <GridLayout rows="*" class="secondary-btn2 float-grid" height="50" orientation="horizontal"
+                verticalAlignment="center" *ngIf="isVendorDrop && showAdminDetails && hopSummary.hopStatus == 2">
+                <label text="Completed" horizontalAlignment="center" verticalAlignment="center"
+                    class="text-sz-14 fabold"></label>
+            </GridLayout>
+        </StackLayout>
+
+
+    </GridLayout>
+</StackLayout>

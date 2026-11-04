@@ -1,0 +1,145 @@
+<DockLayout stretchLastChild="true">
+    <StackLayout dock="bottom">
+        <footer-bar [isSelected]="1"></footer-bar>
+    </StackLayout>
+    <GridLayout rows="*" *ngIf="isLoading" class="loader">
+        <StackLayout row="0" height="100" horizontalAlignment="center" verticalAlignment="center">
+            <ActivityIndicator busy="true" class="activity-indicator"></ActivityIndicator>
+            <Label text="Loading...." class="load-text" textWrap="true"></Label>
+        </StackLayout>
+    </GridLayout>
+    <GridLayout rows="*" *ngIf="!isLoading && tripList.length > 0" class="bg-searchBg">
+        <GridLayout row="0" rows="auto,auto,*">
+            <StackLayout row="0" columns="*" orientation="horizontal" verticalAlignment="top" class="p-2">
+                <Image src="~/images/qwipo-bg.png" width="90"></Image>
+            </StackLayout>
+            <StackLayout row="1" class="pr-2" verticalAlignment="top" *ngIf="showAdminDetails">
+                <StackLayout orientation="horizontal" horizontalAlignment="right">
+                    <StackLayout orientation="horizontal" class="br-30 bg-white border-1 bg-grey" width="auto"
+                        height="32">
+                        <StackLayout orientation="horizontal" verticalAlignment="center" class="p-1"
+                            (tap)="openTripFilters()">
+                            <Label text="Action" textWrap="true"
+                                class="text-black text-sz-14 font-medium text-center pl-1 pr-1"></Label>
+                            <Label text="&#xf0d7;" class="fas text-sz-14 text-black p-1"></Label>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout row="2" class="mt-2">
+                <ng-container>
+                    <StackLayout verticalAlignment="top">
+                        <ng-container>
+                            <ListView [items]="tripList" height="100%" separatorColor="transparent">
+                                <ng-template let-trip="item">
+                                    <StackLayout class="px-2">
+                                        <StackLayout rows="*,*,*" columns="*" sdkExampleTitle sdkToggleNavButton
+                                            class="bg-white m-2 mb-2 rounded-lg">
+                                            <StackLayout orientation="horizontal" class="p-2">
+                                                <StackLayout verticalAlignment="center"
+                                                    class="bg-searchBg p-2 rounded-full">
+                                                    <SVGImage src="~/images/redesign/deliverytruck-black-icon.svg"
+                                                        verticalAlignment="center" height="30" width="30"></SVGImage>
+                                                </StackLayout>
+                                                <StackLayout verticalAlignment="center" horizontalAlignment="center"
+                                                    orientation="vertical" class="w-[65%]">
+                                                    <label [text]="trip.cluster+'_'+trip.sequence" textWrap="true"
+                                                        class="text-raleway text-sz-14 text-center text-black font-medium"></label>
+                                                </StackLayout>
+                                                <StackLayout (tap)="navigateToHops(trip.id)" verticalAlignment="center"
+                                                    horizontalAlignment="right"
+                                                    class="br-30 bg-info text-white w-[20%]" height="40">
+                                                    <label row="0" col="1" text="Details" verticalAlignment="center"
+                                                        class="text-white text-sz-12 font-medium text-center"></label>
+                                                </StackLayout>
+                                            </StackLayout>
+                                            <StackLayout row="1" class="p-2 border-top-grey" orientation="horizontal">
+                                                <StackLayout orientation="vertical" class="w-[40%]">
+                                                    <label textWrap="true" text="Trip Number"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                                    <label textWrap="true" text="Driver"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                                    <label textWrap="true" text="Driver Number"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                                    <label textWrap="true" text="Delivery Agent"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                                    <label textWrap="true" text="Agent Number"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                                    <label textWrap="true" text="Weight"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                                    <label textWrap="true" text="Type"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                                </StackLayout>
+                                                <StackLayout orientation="vertical" class="w-[60%] mr-2">
+                                                    <label [text]="trip.name" horizontalAlignment="right"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                                    <label [text]="trip.driverName" horizontalAlignment="right"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                                    <label [text]="trip.driverNumber" horizontalAlignment="right"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                                    <label [text]="trip.deliveryAgentName" horizontalAlignment="right"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                                    <label [text]="trip.deliveryAgentMobileNumber"
+                                                        horizontalAlignment="right"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                                    <label [text]="trip.weight+ ' Kgs'" horizontalAlignment="right"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                                    <label [text]="trip.vehicleModel | vehicleType"
+                                                        horizontalAlignment="right"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                                </StackLayout>
+                                            </StackLayout>
+                                            <StackLayout row="2" class="p-2 border-top-grey" orientation="horizontal">
+                                                <StackLayout orientation="horizontal" class="w-[50%]">
+                                                    <StackLayout orientation="vertical" class="w-[50%]">
+                                                        <label textWrap="true" text="Pickups"
+                                                            class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                                        <label textWrap="true" text="Deliveries"
+                                                            class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                                    </StackLayout>
+                                                    <StackLayout orientation="vertical" class="w-[50%]">
+                                                        <label [text]="trip.pickupHops"
+                                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                                        <label [text]="trip.deliveryHops"
+                                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                                    </StackLayout>
+                                                </StackLayout>
+                                                <StackLayout orientation="horizontal" class="w-[50%]">
+                                                    <StackLayout orientation="vertical" class="w-[50%]">
+                                                        <label textWrap="true" text="Returns"
+                                                            class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                                        <label textWrap="true" text="Status"
+                                                            class="text-secondary text-sz-14 text-black font-medium pt-1"></label>
+                                                    </StackLayout>
+                                                    <StackLayout orientation="vertical" horizontalAlignment="right"
+                                                        class="w-[50%]">
+                                                        <label [text]="trip.returnHops" horizontalAlignment="left"
+                                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                                        <label [text]="trip.status | tripStatus"
+                                                            horizontalAlignment="left"
+                                                            class="text-raleway text-sz-14 text-black font-medium pt-1"></label>
+                                                    </StackLayout>
+                                                </StackLayout>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </ng-template>
+                            </ListView>
+                        </ng-container>
+                    </StackLayout>
+                </ng-container>
+            </StackLayout>
+        </GridLayout>
+    </GridLayout>
+
+
+    <GridLayout rows="*" *ngIf="!isLoading && tripList.length === 0">
+        <ng-container>
+            <StackLayout horizontalAlignment="center" verticalAlignment="center" class="mt-5">
+                <Image src="~/images/noservice.png" class="h-[30%] w-[40%]"></Image>
+                <Label text="No Trips found" class="text-black text-sz-16 mt-2 font-medium" horizontalAlignment="center"
+                    textWrap="true"></Label>
+            </StackLayout>
+        </ng-container>
+    </GridLayout>
+</DockLayout>

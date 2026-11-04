@@ -1,0 +1,67 @@
+<DockLayout stretchLastChild="true">
+	<StackLayout dock="bottom" *ngIf="!subFooter">
+		<footer-bar [isSelected]="3"></footer-bar>
+	</StackLayout>
+	<StackLayout dock="bottom" *ngIf="subFooter">
+		<sub-footer-bar [isSelected]="8"></sub-footer-bar>
+	</StackLayout>
+	<StackLayout dock="top" class="h-[100%] bg-searchBg">
+		<GridLayout rows="auto,*,auto" class="px-4">
+			<GridLayout row="0" horizontalAlignment="left" class="pt-2">
+				<StackLayout class="bg-searchBg">
+					<SVGImage src="~/images/redesign/qwipologo.svg" class="h-[70] w-[70]"></SVGImage>
+				</StackLayout>
+			</GridLayout>
+			<GridLayout row="1" rows="auto,auto,auto,auto,auto">
+				<GridLayout row="0" rows="2,*" columns="auto,*,auto,5" class="pt-2 pl-2 pb-2">
+					<StackLayout row="1" col="0" verticalAlignment="center"
+						class="bg-white justify-center rounded-full p-2">
+						<image src="~/images/redesign/blank-image.jpg" height="50" width="50" class="rounded-full">
+						</image>
+					</StackLayout>
+					<StackLayout row="1" col="1" class="pl-5 pt-2 pb-2" orientation="vertical"
+						verticalAlignment="center" (tap)="profile()">
+						<label [text]="name" class="text-serif text-black text-sz-20 font-wt-500"
+							textWrap="true"></label>
+						<label [text]="mobileNumber" class="text-sans text-secondary text-sz-16 text-wt-500"></label>
+					</StackLayout>
+					<StackLayout row="1" col="2" verticalAlignment="center">
+						<label text=" &#xf054;" class="text-black fas text-sz-20"></label>
+					</StackLayout>
+				</GridLayout>
+				<GridLayout row="1" rows="2,*" columns="auto,*,auto,5" class="pl-4 pt-2 border-top-grey">
+					<StackLayout row="1" col="1" class="pl-5" orientation="vertical" verticalAlignment="center">
+						<label text="Optimization" class="text-sans text-sz-15 text-black font-wt-500 "></label>
+					</StackLayout>
+					<StackLayout row="1" col="2" verticalAlignment="center" orientation="horizontal">
+						<ng-container *ngIf="!isLoading; else loadingTemplate">
+							<Button text="Route" class="rounded-lg bg-primary text-sz-12 h-8 text-white p-1"
+								(tap)="optimizeRoute()">
+							</Button>
+						</ng-container>
+						<ng-template #loadingTemplate>
+							<ActivityIndicator busy="true" class="ml-2" width="24" height="24"></ActivityIndicator>
+						</ng-template>
+					</StackLayout>
+				</GridLayout>
+			</GridLayout>
+			<GridLayout row="2" rows="*,*,*">
+				<GridLayout row="0" class="pl-4">
+					<label text="Contact Us" (tap)="contactUs()"
+						class="text-sans text-sz-14  font-wt-normal text-black mb-2"></label>
+				</GridLayout>
+				<GridLayout row="1" class="pl-4" (tap)="navigate(1)">
+					<label text="Terms & Conditions"
+						class="text-sans text-sz-14 font-wt-normal text-black mb-2"></label>
+				</GridLayout>
+				<GridLayout row="2" class="pl-4 pb-1" (tap)="logout()">
+					<StackLayout orientation="horizontal">
+						<SVGImage src="~/images/redesign/logout.svg" class="h-6 w-6 text-danger-500"></SVGImage>
+						<label text="Logout"
+							class="mb-1 text-sans text-sz-14 font-wt-normal text-[#FF3B30] pl-2"></label>
+					</StackLayout>
+				</GridLayout>
+			</GridLayout>
+		</GridLayout>
+	</StackLayout>
+</DockLayout>

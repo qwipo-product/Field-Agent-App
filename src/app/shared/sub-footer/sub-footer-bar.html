@@ -1,0 +1,25 @@
+<FlexboxLayout flexDirection="row" justifyContent="space-around" alignItems="flex-end"
+  class="pt-2 pb-2 w-full border-top-grey">
+  <FlexboxLayout flexDirection="row" justifyContent="space-around" alignItems="flex-end" class="footerBg w-full">
+
+    <FlexboxLayout flexDirection="column" [ngClass]="isSelected === 6 ? 'text-black': ''"
+      (tap)="navigationToAppVersion()" *ngIf="!showGreetingScreen">
+      <Label text="&#xf015;" verticalAlignment="center"
+        [ngClass]="isSelected != 8 ? 'fas text-black font-wt-100 text-xl text-center' : 'fas text-grey font-wt-100 text-xl text-center' "
+        horizontalAlignment="center"></Label>
+      <label text="Home" textWrap="true" class="font-sans text-sz-10"> </label>
+    </FlexboxLayout>
+
+
+
+    <FlexboxLayout flexDirection="column" [ngClass]="isSelected === 8 ? 'text-black': ''" (tap)="navigationToInfo()">
+      <Label text="&#xf2bd;" verticalAlignment="center"
+        [ngClass]="isSelected === 8 ? 'fas text-black font-wt-100 text-xl text-center' : 'fas text-grey font-wt-100 text-xl text-center' "
+        horizontalAlignment="center"></Label>
+      <label text="My Account" textWrap="true" class="font-sans text-sz-10 self-center"> </label>
+    </FlexboxLayout>
+
+
+
+  </FlexboxLayout>
+</FlexboxLayout>

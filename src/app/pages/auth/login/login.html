@@ -1,0 +1,8 @@
+<GridLayout rows="*, auto" height="100%" iosOverflowSafeAreaEnabled="false" *ngIf="showLoading">
+	<ScrollView class="bg-accent" height="100%" iosOverflowSafeAreaEnabled="false">
+		<StackLayout class="w-100" horizontalAlignment="center" verticalAlignment="center">
+			<ActivityIndicator [busy]="showLoading" width="50" class="activity-indicator"></ActivityIndicator>
+			<Label text="Loading...." class="c-gray text-center font-medium text-sz-14 pl-3" textWrap="true"></Label>
+		</StackLayout>
+	</ScrollView>
+</GridLayout>

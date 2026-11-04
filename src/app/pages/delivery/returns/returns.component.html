@@ -1,0 +1,195 @@
+<GridLayout rows="*" class="bg-searchBg">
+    <GridLayout row="0" rows="*">
+
+        <GridLayout row="0" rows="*" *ngIf="isLoading" class="loader">
+            <StackLayout row="0" height="100" horizontalAlignment="center" verticalAlignment="center">
+                <ActivityIndicator busy="true" class="activity-indicator"></ActivityIndicator>
+                <Label text="Loading...." class="load-text" textWrap="true"></Label>
+            </StackLayout>
+        </GridLayout>
+
+        <StackLayout row="0" columns="*,auto" class="p-3" orientation="horizontal" verticalAlignment="top"
+            *ngIf="!isLoading && hopReturnProducts.length==0">
+            <StackLayout horizontalAlignment="center" verticalAlignment="center" class="mt-5 ml-[30%]">
+                <ImageCache src="~/images/noservice.png" class="h-[30%] w-[40%]"></ImageCache>
+                <label text="No Returns Found" class="text-black font-medium text-sz-16" horizontalAlignment="center"
+                    textWrap="true"></label>
+            </StackLayout>
+        </StackLayout>
+
+        <StackLayout row="0" class="mt-2" *ngIf="!isLoading && hopReturnProducts.length>0">
+            <ListView class="h-[100%] w-[100%]" [items]="hopReturnProducts" id="listViewId"
+                separatorColor="transparent">
+                <ng-template height="100%" let-item="item" let-itemIndex="index">
+                    <StackLayout class="w-[100%] px-3 m-2">
+
+
+
+
+                        <GridLayout rows="*,*,*" columns="*" sdkExampleTitle sdkToggleNavButton
+                            class="bg-white rounded-lg elevation m-2">
+                            <StackLayout row="0" class="p-2" orientation="horizontal">
+                                <StackLayout orientation="horizontal" class="w-[100%]">
+                                    <Label [text]="item.itemName+'- MRP '+item.mrp" textWrap="true"
+                                        class="text-sz-16 text-black leading-snug font-semibold font-sans"></Label>
+                                </StackLayout>
+
+                            </StackLayout>
+                            <StackLayout row="1" class="p-2 border-top-grey" orientation="horizontal">
+                                <StackLayout orientation="vertical" class="w-[100%]">
+                                    <FlexBoxLayout row="1" flexDirection="row">
+                                        <StackLayout class="w-[70%]">
+                                            <FlexboxLayout justifyContent="space-between">
+                                                <StackLayout>
+                                                    <Label text="Cases"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1">
+                                                    </Label>
+                                                    <Label text="Pieces" textWrap="true"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1"></Label>
+
+                                                    <Label text="Sale Value"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1">
+                                                    </Label>
+
+                                                    <Label text="Returned Qty"
+                                                        class="text-secondary text-sz-14 text-black font-medium pt-1">
+                                                    </Label>
+                                                </StackLayout>
+                                                <StackLayout>
+                                                    <Label [text]="item.cases" textWrap="true"
+                                                        horizontalAlignment="right"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1"></Label>
+                                                    <Label [text]="item.pieces" horizontalAlignment="right"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1">
+                                                    </Label>
+                                                    <Label [text]="item.totalNetAmount" textWrap="true"
+                                                        horizontalAlignment="right"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1"></Label>
+
+                                                    <Label [text]="item.quantity" horizontalAlignment="right"
+                                                        class="text-raleway text-sz-14 text-black font-medium pt-1">
+                                                    </Label>
+                                                </StackLayout>
+                                            </FlexboxLayout>
+                                        </StackLayout>
+                                        <StackLayout class="w-[29%] right ml-5" orientation="vertical"
+                                            horizontalAlignment="right" verticalAlignment="center">
+                                            <StackLayout class="column imagegrid" height="100%" width="90%"
+                                                horizontalAlignment="right" class="m-1">
+                                                <Image class="rounded-lg p-1 br-30 bg-searchBg mr-1" height="100"
+                                                    width="100" [src]="item.imageUrl" stretch="aspectFill"
+                                                    horizontalAlignment="right" src="~/images/ph.png">
+                                                </Image>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </FlexBoxLayout>
+                                </StackLayout>
+                            </StackLayout>
+
+                            <StackLayout row="2" class="p-2 border-top-grey" orientation="horizontal">
+                                <StackLayout verticalAlignment="center">
+                                    <label textWrap="true" [text]="'Seller : ' +item.vendorName "
+                                        class="text-raleway text-sz-14 text-black font-medium "></label>
+                                </StackLayout>
+                            </StackLayout>
+
+                        </GridLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <!-- <GridLayout rows="*,*" columns="*" sdkExampleTitle sdkToggleNavButton
+                            class="bg-white pt-3 pl-2 rounded-lg shadow1-xl mb-5 pb-5">
+                            <FlexBoxLayout row="0" flexDirection="row">
+                                <StackLayout orientation="horizontal" class="w-[80%]">
+                                    <StackLayout class="mb-1">
+                                        <Label [text]="item.itemName" textWrap="true"
+                                            class="text-sz-16 text-black leading-snug font-semibold font-sans"></Label>
+                                    </StackLayout>
+                                </StackLayout>
+                            </FlexBoxLayout>
+                            <FlexBoxLayout row="1" flexDirection="row">
+                                <StackLayout class="w-[90%]">
+                                    <StackLayout flexDirection="row" class="w-full border-top-grey">
+                                        <GridLayout columns="*,*">
+                                            <GridLayout rows="*,*,*" col="0">
+                                                <GridLayout row="0" columns="*,*">
+                                                    <StackLayout col="0" verticalAlignment="center">
+                                                        <label textWrap="true" text="Pieces"
+                                                            class="text-raleway text-sz-14 text-black font-medium"></label>
+                                                    </StackLayout>
+                                                    <StackLayout col="1" verticalAlignment="center"
+                                                        class="text-left place-items-end">
+                                                        <label [text]="item.pieces"
+                                                            class="text-raleway text-sz-14 text-black font-medium"></label>
+                                                    </StackLayout>
+                                                </GridLayout>
+                                                <GridLayout row="1" columns="*,*">
+                                                    <StackLayout col="0" verticalAlignment="center">
+                                                        <label textWrap="true" text="Selling Price"
+                                                            class="text-raleway text-sz-14 text-black font-medium"></label>
+                                                    </StackLayout>
+                                                    <StackLayout col="1" verticalAlignment="center"
+                                                        class="text-left place-items-end">
+                                                        <label [text]="item.sellingPrice"
+                                                            class="text-raleway text-sz-14 text-black font-medium"></label>
+                                                    </StackLayout>
+                                                </GridLayout>
+
+                                            </GridLayout>
+
+                                            <GridLayout rows="*,*,*" col="1" class="ml-2">
+                                                <GridLayout row="0" columns="*,*" class="mb-1">
+                                                    <StackLayout col="0" verticalAlignment="center">
+                                                        <label textWrap="true" text="Cases"
+                                                            class="text-raleway text-sz-14 text-black font-medium"></label>
+                                                    </StackLayout>
+                                                    <StackLayout col="1" verticalAlignment="center"
+                                                        class="text-left place-items-end">
+                                                        <label textWrap="true" [text]="item.cases"
+                                                            class="text-raleway text-sz-14 text-black font-medium"></label>
+                                                    </StackLayout>
+                                                </GridLayout>
+                                                <GridLayout row="1" columns="*,*">
+                                                    <StackLayout col="0" verticalAlignment="center">
+                                                        <label textWrap="true" text="Returned Qty"
+                                                            class="text-raleway text-sz-14 text-black font-medium"></label>
+                                                    </StackLayout>
+                                                    <StackLayout row="0" col="1" verticalAlignment="center"
+                                                        class="text-left place-items-end">
+                                                        <label textWrap="true" [text]="item.quantity"
+                                                            class="text-raleway text-sz-14 text-black font-medium"></label>
+                                                    </StackLayout>
+                                                </GridLayout>
+                                            </GridLayout>
+                                        </GridLayout>
+                                    </StackLayout>
+                                </StackLayout>
+                                <StackLayout class="w-[50%] right pr-2 " orientation="vertical">
+                                    <StackLayout class="column imagegrid" height="80" width="80"
+                                        horizontalAlignment="right" class="mt-2 mb-4">
+                                        <Image class="rounded-lg p-1 br-30 bg-searchBg" height="80" width="80"
+                                            stretch="aspectFill" horizontalAlignment="right" [src]="item.imageUrl">
+                                        </Image>
+                                    </StackLayout>
+                                </StackLayout>
+                            </FlexBoxLayout>
+                        </GridLayout> -->
+
+
+                    </StackLayout>
+                </ng-template>
+            </ListView>
+        </StackLayout>
+    </GridLayout>
+</GridLayout>

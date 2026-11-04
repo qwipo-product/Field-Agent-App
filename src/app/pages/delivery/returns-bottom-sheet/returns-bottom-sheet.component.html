@@ -1,0 +1,103 @@
+<GridLayout rows="auto" verticalAlignment="bottom" [height]="popupHeight ? popupHeight : 455"
+    class="bg-white" borderRadius="25 25 0 0">
+    <StackLayout *ngIf="type == 10005" class="pb-5 px-5" height="900">
+        <GridLayout columns="*,30" rows="*" dock="top" class="bg-white p-3 border-b-2 border-gray-200"
+            verticalAlignment="center">
+            <Label col="0" row="0" [text]="partialReturnSku.itemName" verticalAlignment="center"
+                horizontalAlignment="left" class="text-black pl-2 text-sz-16 font-wt-700 text-sans "
+                textWrap="true"></Label>
+            <Label col="1" row="0" text="&#xf00d;" (tap)="close()" verticalAlignment="center"
+                horizontalAlignment="center" class="text-right fas fa-thin text-secondary font-wt-100 text-xl"></Label>
+        </GridLayout>
+        <ScrollView height="850" orientation="vertical" scrollBarIndicatorVisible="false">
+            <StackLayout rows="*,*,auto" verticalAlignment="top">
+                <!-- <GridLayout rows="auto,auto" class="bg-searchBg border-1-grey pl-4 mt-4 mx-5">
+                    <StackLayout row="0" orientation="horizontal">
+                        <label text="Enter Return Quantity" class="text-sz-12 text-label pt-2" textWrap="true"></label>
+                    </StackLayout>
+                    <GridLayout rows="auto" class="pt-5">
+                        <StackLayout col="1" class="pt-1 pr-1 pb-1">
+                            <TextField class="text-black text-sz-14 bg-searchBg" verticalAlignment="center"
+                                [(ngModel)]="changedQuantity" keyboardType="number" (tap)="onTextFieldTap()">
+                            </TextField>
+                        </StackLayout>
+                    </GridLayout>
+                </GridLayout> -->
+                <GridLayout row="0" rows="auto,40" class="bg-searchBg border-1-grey pl-4 mt-4 mx-5">
+                    <StackLayout row="0" orientation="horizontal">
+                        <label text="Enter Return Quantity" class="text-sz-12 text-label pt-2" textWrap="true"></label>
+                    </StackLayout>
+                    <GridLayout row="1" columns="*">
+                        <GridLayout col="0" verticalAlignment="center">
+                            <TextField class="text-black text-sz-14 bg-searchBg" verticalAlignment="center"
+                                [(ngModel)]="changedQuantity" keyboardType="number" (tap)="onTextFieldTap()">
+                            </TextField>
+                        </GridLayout>
+                    </GridLayout>
+                </GridLayout>
+
+
+                <GridLayout row="1" rows="auto,*">
+
+                    <GridLayout row="0" rows="auto,auto" class="bg-searchBg border-1-grey pl-4 mt-4 mx-5"
+                        (tap)="openReturnRequestList()">
+                        <StackLayout row="0" orientation="horizontal">
+                            <label text="Reason" class="text-sz-12 text-label pt-2" textWrap="true"></label>
+                            <label text="&#xf069;" class="fas text-sz-10 pt-2 pl-1"></label>
+                        </StackLayout>
+                        <GridLayout rows="auto" class="pt-5">
+                            <StackLayout col="1" class="pt-2 pr-1 pb-1">
+                                <Label class="text-black text-sz-14 bg-searchBg mb-2" *ngIf="!isSelectedReason"
+                                    verticalAlignment="center" text="Select Reason for Return" row="0" col="1"
+                                    returnKeyType="done">
+                                </Label>
+                                <Label class="text-black text-sz-14 bg-searchBg mb-2" *ngIf="isSelectedReason"
+                                    verticalAlignment="center" [text]="selectedReason.name" row="0" col="1"
+                                    returnKeyType="done">
+                                </Label>
+                            </StackLayout>
+                        </GridLayout>
+                    </GridLayout>
+
+                    <StackLayout row="1"  [ngClass]="!showReturnRequestList ? 'bg-white' : 'bg-searchBg border-1-grey pl-4 mt-4 mx-5'" height="400">
+                        <ScrollView>
+                            <StackLayout verticalAlignment="center" *ngIf="showReturnRequestList">
+                                <GridLayout rows="50" columns="auto,5,*" verticalAlignment="center"
+                                    class="p-1 border-b-2 border-gray-200" *ngFor="let return of returns">
+                                    <StackLayout row="0" col="0" verticalAlignment="center" horizontalAlignment="center"
+                                        (tap)="selectSubFilter(return)">
+                                        <label [text]="return.name" class="text-black text-left text-sz-14"
+                                            textWrap="true"></label>
+                                    </StackLayout>
+                                    <StackLayout row="0" col="2" verticalAlignment="center" horizontalAlignment="right"
+                                        (tap)="selectSubFilter(return)" class="mr-5">
+                                        <SVGImage src="~/images/redesign/icons/radio-selected.svg"
+                                            *ngIf="return.isSelected" class="w-4 h-4">
+                                        </SVGImage>
+                                        <SVGImage src="~/images/redesign/icons/radio-before.svg"
+                                            *ngIf="!return.isSelected" class="w-4 h-4">
+                                        </SVGImage>
+                                    </StackLayout>
+                                </GridLayout>
+                            </StackLayout>
+                        </ScrollView>
+                    </StackLayout>
+
+                </GridLayout>
+
+
+                <GridLayout row="2" rows="*" height="70" orientation="vertical" horizontalAlignment="center" verticalAlignment="center"
+                     class="mt-2">
+                    <StackLayout row="0" verticalAlignment="center">
+                        <Button text="Submit" class="primary-btn2 h-[70%]"
+                            (tap)="productReturn()"></Button>
+                    </StackLayout>
+                </GridLayout>
+
+
+
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
+
+</GridLayout>

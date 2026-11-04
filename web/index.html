@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Field Agent Demo</title>
+  <base href="./">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Qwipo Field Agent app running in the browser on synthetic data.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="icon.png">
+  <script>
+    // NativeScript components declare moduleId: module.id; give that expression something to read.
+    var module = { id: "" };
+  </script>
+</head>
+<body>
+  <main class="fa-page">
+    <div class="fa-phone">
+      <div class="fa-device">
+        <div class="fa-statusbar" aria-hidden="true">
+          <span class="fa-clock">9:41</span>
+          <span class="fa-status-icons">
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="#fff"><path d="M1 9h2v3H1zM5 6h2v6H5zM9 3h2v9H9zM13 0h2v12h-2z"/></svg>
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="#fff"><path d="M8 12 0 3.5C4.5-1 11.5-1 16 3.5z"/></svg>
+            <svg width="24" height="12" viewBox="0 0 24 12" fill="none" stroke="#fff"><rect x=".5" y=".5" width="20" height="11" rx="3"/><rect x="2.5" y="2.5" width="14" height="7" rx="1.5" fill="#fff" stroke="none"/><path d="M22.5 4v4" stroke-linecap="round"/></svg>
+          </span>
+        </div>
+        <div class="fa-screen">
+          <ns-app></ns-app>
+        </div>
+        <nav class="fa-navbar" aria-label="Android navigation">
+          <button type="button" class="fa-back" title="Back (Android back button, also Esc)" aria-label="Back">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M14 2v14L3 9z"/></svg>
+          </button>
+          <button type="button" class="fa-home" title="Restart the app (keeps you signed in, resets demo data)" aria-label="Restart app">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="9" r="7"/></svg>
+          </button>
+        </nav>
+      </div>
+    </div>
+
+    <aside class="fa-panel" aria-label="About this demo">
+      <h1>Qwipo Field Agent, demo build</h1>
+      <p>The real app's screens and logic running in the browser. All data is synthetic and stays on this page; nothing is sent anywhere.</p>
+      <h2>Sign in as</h2>
+      <p>Tap a number to copy it. Any 6-digit OTP works.</p>
+      <table class="fa-personas">
+        <tbody>
+          <tr><td><button type="button" data-copy="9876543210">9876543210</button></td><td>Delivery executive<small>Today's stops on trip ALWAL-1</small></td></tr>
+          <tr><td><button type="button" data-copy="9876543211">9876543211</button></td><td>Driver<small>Today's stops on trip ALWAL-1</small></td></tr>
+          <tr><td><button type="button" data-copy="9876543212">9876543212</button></td><td>Operations executive<small>All trips; can start a trip</small></td></tr>
+          <tr><td><button type="button" data-copy="9876543213">9876543213</button></td><td>Manager<small>All trips, filters, stop OTPs</small></td></tr>
+          <tr><td><button type="button" data-copy="9876543214">9876543214</button></td><td>Inactive agent<small>"Thank you for signing up" page</small></td></tr>
+          <tr><td><button type="button" data-copy="9876543215">9876543215</button></td><td>Outdated app<small>Force-update page</small></td></tr>
+        </tbody>
+      </table>
+      <h2>Good to know</h2>
+      <p>Returns, payments and completed stops are remembered until you reset. The ◁ button below the screen is Android's back button.</p>
+      <div class="fa-actions">
+        <button type="button" class="fa-reset">Reset demo</button>
+        <a href="https://github.com/qwipo-product/Field-Agent-App" target="_blank" rel="noopener">Source on GitHub</a>
+      </div>
+    </aside>
+    <button type="button" class="fa-info-toggle" aria-label="Demo sign-in numbers">i</button>
+  </main>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<StackLayout height="100%" iosOverflowSafeAreaEnabled="false">
+	<GridLayout rows="*, auto" class="bg-white">
+		<!-- OTP Input Section -->
+		<StackLayout row="0" class="m-2 p-2 h-[70%]">
+			<!-- App Logo -->
+			<Image src="~/images/qwipo-bg.png" width="90" height="60"></Image>
+
+			<!-- Header -->
+			<Label text="Enter 6-digit OTP" class="header font-extrabold pl-3" textWrap="true"></Label>
+
+			<!-- OTP Input Fields -->
+			<StackLayout [formGroup]="otpForm">
+				<GridLayout rows="auto, auto, auto" class="px-3">
+					<!-- OTP Digits -->
+					<GridLayout row="0" columns="*,5,*,5,*,5,*,5,*,5,*" class="pt-5">
+						<TextField col="0" returnKeyType="next" #firstDigit maxlength="1" hint="0"
+							(textChange)="onTextChange($event,0)" (returnPress)="onReturnOtpCode($event,0)"
+							class="h-[40%] h5 otp-middle text-xs font-wt-500 text-black focus:text-sz-14 br-10 focus:bg-white focus:border-black rounded-lg focus:h-[45%] text-center"
+							keyboardType="number" pattern="[0-9]*">
+						</TextField>
+						<TextField col="2" returnKeyType="next" #secondDigit maxlength="1" hint="0"
+							(textChange)="onTextChange($event,1)" (returnPress)="onReturnOtpCode($event,1)"
+							class="h-[40%] h5 otp-middle text-xs font-wt-500 focus:text-sz-14 text-black  focus:bg-white focus:border-black focus:rounded-lg focus:h-[45%] text-center"
+							keyboardType="number" pattern="[0-9]*">
+						</TextField>
+						<TextField col="4" returnKeyType="next" #thirdDigit maxlength="1" hint="0"
+							(textChange)="onTextChange($event,2)" (returnPress)="onReturnOtpCode($event,2)"
+							class="h-[40%] h5 otp-middle text-xs font-wt-500 text-black focus:text-sz-14 br-10 focus:bg-white focus:border-black rounded-lg focus:h-[45%] text-center"
+							keyboardType="number" pattern="[0-9]*">
+						</TextField>
+						<TextField col="6" returnKeyType="next" #fourthDigit maxlength="1" hint="0"
+							(textChange)="onTextChange($event,3)" (returnPress)="onReturnOtpCode($event,3)"
+							class="h-[40%] h5 otp-middle text-xs font-wt-500 text-black focus:text-sz-14 br-10 focus:bg-white focus:border-black rounded-lg focus:h-[45%] text-center"
+							keyboardType="number" pattern="[0-9]*">
+						</TextField>
+						<TextField col="8" returnKeyType="next" #fifthDigit maxlength="1" hint="0"
+							(textChange)="onTextChange($event,4)" (returnPress)="onReturnOtpCode($event,4)"
+							class="h-[40%] h5 otp-middle text-xs font-wt-500 text-black focus:text-sz-14 br-10 focus:bg-white focus:border-black rounded-lg focus:h-[45%] text-center"
+							keyboardType="number" pattern="[0-9]*">
+						</TextField>
+						<TextField col="10" returnKeyType="next" #sixthDigit maxlength="1" hint="0"
+							(textChange)="onTextChange($event,5)" (returnPress)="onReturnOtpCode($event,5)"
+							class="h-[40%] h5 otp-middle text-xs font-wt-500 text-black focus:text-sz-14 br-10 focus:bg-white focus:border-black rounded-lg focus:h-[45%] text-center"
+							keyboardType="number" pattern="[0-9]*"></TextField>
+					</GridLayout>
+
+					<!-- Timer -->
+					<GridLayout row="1" class="pt-5" horizontalAlignment="center">
+						<Label [text]="'00:' + zeroPad(setOtpTimer, 2)"
+							[ngClass]="isTimerCompleted ? 'text-danger-500' : 'text-success-500'" class="text-sz-14"
+							textWrap="true">
+						</Label>
+					</GridLayout>
+
+					<!-- Resend OTP and Edit Mobile Number -->
+					<GridLayout row="2" class="pt-5">
+						<FlexboxLayout justifyContent="space-between">
+							<!-- Resend OTP -->
+							<StackLayout>
+								<Label text="Resend OTP" (tap)="resendOTP()"
+									[ngClass]="isTimerCompleted ? 'text-black' : 'text-secondary opacity-25'"
+									class="text-sz-14 font-sans" textWrap="true">
+								</Label>
+							</StackLayout>
+
+							<!-- Edit Mobile Number -->
+							<StackLayout orientation="horizontal" horizontalAlignment="right" class="w-[50%]">
+								<Label *ngIf="loginMobileNumber" [text]="loginMobileNumber"
+									class="text-sz-14 text-secondary mr-2" textWrap="true">
+								</Label>
+								<Image src="~/images/redesign/Edit.png" stretch="fill" height="16" width="16"
+									(tap)="showMobileNumberScreen()">
+								</Image>
+							</StackLayout>
+						</FlexboxLayout>
+					</GridLayout>
+				</GridLayout>
+			</StackLayout>
+		</StackLayout>
+
+		<!-- Footer Section -->
+		<StackLayout row="1" orientation="vertical" class="h-[30%]">
+			<!-- Terms & Conditions -->
+			<StackLayout row="0" orientation="vertical" horizontalAlignment="center" verticalAlignment="top">
+				<Label text="By proceeding, you are agreeing to Qwipo's"
+					class="text-sm text-secondary pt-5 text-center">
+				</Label>
+				<Label text="Terms & Conditions" class="text-sm text-black pt-2 font-bold text-center"
+					(tap)="navigation()">
+				</Label>
+			</StackLayout>
+
+			<!-- Continue Button -->
+			<StackLayout row="1" height="60" orientation="vertical" horizontalAlignment="center"
+				verticalAlignment="bottom">
+				<Button text="Continue"
+					[ngClass]="enableOtpButton ? 'primary-btn2 h-[80%] mt-5' : 'secondary-btn2 h-[80%] mt-5'"
+					[isEnabled]="enableOtpButton" (tap)="verifyOTP()">
+				</Button>
+			</StackLayout>
+		</StackLayout>
+	</GridLayout>
+</StackLayout>

@@ -1,0 +1,29 @@
+<FlexboxLayout orientation="horizontal" alignItems="flex-end" justifyContent="space-around" class="w-full border-top-grey bg-white">
+    <StackLayout rows="*" orientation="vertical" justifyContent="space-around" [ngClass]="isSelected === 1 ? 'text-black ': ''"
+        (tap)="navigateTripList()" >
+        <StackLayout row="0" orientation="vertical" class="pt-2 pb-2">
+            <SVGImage
+                [src]="isSelected === 1 ? '~/images/redesign/deliverytruck-black-icon.svg': '~/images/redesign/deliverytruck-icon.svg'"
+                class="h-6 w-6"></SVGImage>
+            <label text="Trips" textWrap="true" class="font-medium text-sz-12 pt-1 text-center"> </label>
+        </StackLayout>
+    </StackLayout>
+    <StackLayout rows="*" orientation="vertical" [ngClass]="isSelected === 2 ? 'text-black': ''"
+        (tap)="navigateHopsList()" *ngIf="isAgent">
+        <StackLayout row="0" orientation="vertical" class="pt-2 pb-2">
+            <SVGImage
+                [src]="isSelected === 2 ? '~/images/redesign/hopfooter.svg': '~/images/redesign/hopfooterdark.svg'"
+                class="h-6 w-6"></SVGImage>
+            <label text="Hops" textWrap="true" class="font-medium text-sz-12 pt-1 text-center"> </label>
+        </StackLayout>
+    </StackLayout>
+    <StackLayout rows="*" orientation="vertical" [ngClass]="isSelected === 3 ? 'text-black': ''"
+        (tap)="navigateAccount()" >
+        <StackLayout row="0" orientation="vertical" class="pt-2 pb-2">
+            <SVGImage
+                [src]="isSelected === 3 ? '~/images/redesign/account-black-icon.svg': '~/images/redesign/account-icon.svg'"
+                class="h-6 w-6"></SVGImage>
+            <label text="My Account" textWrap="true" class="font-medium text-sz-12 pt-1 text-center"> </label>
+        </StackLayout>
+    </StackLayout>
+</FlexboxLayout>

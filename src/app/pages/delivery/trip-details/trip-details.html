@@ -1,0 +1,37 @@
+<DockLayout stretchLastChild="true">
+    <StackLayout rows="*,*" class="bg-searchBg">
+        <StackLayout row="0" orientation="horizontal" class="p-2" (tap)="goBack()" *ngIf="!isTripSummary">
+            <Label text="&#xf053;" class="back-arrow"></Label>
+            <Label text="Trip Summary" class="title"></Label>
+        </StackLayout>
+        <StackLayout row="0" orientation="horizontal" class="p-2" (tap)="goBack()" *ngIf="isTripSummary">
+            <Label text="&#xf053;" class="back-arrow"></Label>
+            <Label text="Hops List" class="title"></Label>
+        </StackLayout>
+        <StackLayout row="1" columns="*,auto" class="p-2" orientation="horizontal" verticalAlignment="top">
+            <StackLayout orientation="horizontal" class="w-full" horizontalAlignment="center"
+                verticalAlignment="center">
+                <StackLayout orientation="horizontal" horizontalAlignment="center">
+                    <StackLayout (tap)="showTripSummary()"
+                        [ngClass]="!isTripSummary ? 'rounded-lg bg-info text-sz-14 w-[50%] h-10 font-medium leading-normal text-white m-2 p-2' : 'rounded-lg text-sz-14 w-[50%] h-10 font-medium leading-normal text-black bg-white m-2 p-2 border-1-black'">
+                        <Label text="Summary" class="text-center text-sz-16 " verticalAlignment="center"></Label>
+                    </StackLayout>
+                    <StackLayout (tap)="showStopsList()"
+                        [ngClass]="isTripSummary ? 'rounded-lg bg-info text-sz-14 w-[50%] h-10 font-medium leading-normal text-white m-2 p-2' : 'rounded-lg text-sz-14 w-[50%] h-10 font-medium leading-normal text-black bg-white m-2 p-2 border-1-black'">
+                        <Label text="Hops" class="text-center text-sz-16" verticalAlignment="center"></Label>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+        <StackLayout *ngIf="showTripDetails">
+            <StackLayout>
+                <StackLayout *ngIf="!isTripSummary" class="mt-5">
+                    <trip-summary></trip-summary>
+                </StackLayout>
+                <StackLayout *ngIf="isTripSummary">
+                    <hops-list></hops-list>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </StackLayout>
+</DockLayout>

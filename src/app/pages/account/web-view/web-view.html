@@ -1,0 +1,10 @@
+<ActionBar>
+    <NavigationButton ios:visibility="collapsed" android.systemIcon="ic_menu_back" (tap)="goBack()"></NavigationButton>
+    <ActionItem text="Back" android:visibility="collapsed" (tap)="goBack()" ios.position="left"></ActionItem>
+    <Label class="action-bar-title" [text]="actionBarText"></Label>
+</ActionBar>
+<StackLayout class="page p-5">
+    <GridLayout>
+        <WebView #myWebView [src]="webViewSrc"></WebView>
+    </GridLayout>
+</StackLayout>

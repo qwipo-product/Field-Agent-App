@@ -1,0 +1,30 @@
+<DockLayout stretchLastChild="true">
+	<StackLayout dock="bottom">
+		<sub-footer-bar [isSelected]="7"></sub-footer-bar>
+	</StackLayout>
+	<StackLayout verticalAlignment="top" class="bg-white">
+		<StackLayout height="100%">
+			<Image src="~/images/qwipo-bg.png" width="90" height="60" class="pl-2 mt-5">
+			</Image>
+			<StackLayout horizontalAlignment="center" class="pt-10">
+				<Label text="&#xf164;" class="text-black fas text-sz-50 pt-5" verticalAlignment="center"
+					horizontalAlignment="center"></Label>
+			</StackLayout>
+			<StackLayout horizontalAlignment="center" orientation="vertical" columns="*" orientation="vertical"
+				class="pt-2">
+				<Label text="Thank You" class="text-sz-18 text-black font-sans text-center pt-5"></Label>
+				<Label [text]="opsUser.name" class="text-sz-18 font-extrabold text-black text-center pt-1"></Label>
+				<Label text="for signing up with us." class="text-sz-18 text-black font-sans text-center pt-1"></Label>
+				<Label text="Our Representative will get"
+					class="text-sz-18 text-black font-sans text-center pt-1"></Label>
+				<Label text="in touch with you shortly."
+					class="text-sz-18 text-black font-sans text-center pt-1"></Label>
+				<Label text="We are reachable at" class="text-sz-18 text-black font-sans text-center mt-10"></Label>
+				<Label [text]="qwipoContactNumber" (tap)="contactUser(qwipoContactNumber)" verticalAlignment="center"
+					class="text-sz-18  text-black font-extrabold text-center pt-1"></Label>
+				<Label text="for any questions in the meantime"
+					class="text-sz-18 text-black text-center font-sans pt-1"></Label>
+			</StackLayout>
+		</StackLayout>
+	</StackLayout>
+</DockLayout>

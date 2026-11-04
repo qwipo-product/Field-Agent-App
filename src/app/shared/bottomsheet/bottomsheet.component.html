@@ -1,0 +1,370 @@
+<GridLayout>
+  <GridLayout height="20%" verticalAlignment="top" (tap)="close('')">
+    <StackLayout orientation="vertical" verticalAlignment="center">
+      <StackLayout class="rounded-full bg-white" width="40" height="40" verticalAlignment="center"
+        horizontalAlignment="center">
+        <Label text="&#xf00d;" class="fas text-sz-16 text-black text-center"></Label>
+      </StackLayout>
+      <Label text="Close" class="famedium text-sz-16 text-white mt-2" horizontalAlignment="center"></Label>
+    </StackLayout>
+  </GridLayout>
+
+  <GridLayout rows="auto" verticalAlignment="bottom" class="bg-white" borderRadius="25 25 0 0">
+    <!-- Log Out -->
+    <StackLayout *ngIf="type === 10001" class="pb-5 bg-white" height="250" borderRadius="25 25 0 0">
+      <GridLayout orientation="vertical" rows="auto,auto,auto">
+        <StackLayout row="0" horizontalAlignment="center" verticalAlignment="top" class="border-bottom px-5 w-[100%]">
+          <Label text="Logout" class="text-cancel text-sz-20 text-center font-medium p-5 "></Label>
+        </StackLayout>
+        <StackLayout row="1" horizontalAlignment="center" class="mt-10" verticalAlignment="top">
+          <Label text="Do you want to Logout ?" class="text-black text-sz-16 font-medium"></Label>
+        </StackLayout>
+        <StackLayout row="2" class="p-2 mt-10" orientation="horizontal" verticalAlignment="top">
+          <StackLayout orientation="vertical" horizontalAlignment="left" class="w-[50%]">
+            <StackLayout orientation="horizontal" horizontalAlignment="center" class="br-30 border-1 bg-searchBg"
+              (tap)="close()">
+              <StackLayout orientation="horizontal" verticalAlignment="center" horizontalAlignment="center"
+                class="p-3 px-5">
+                <Label text="Cancel" class="text-black text-sz-14 font-medium text-center"
+                  horizontalAlignment="center"></Label>
+              </StackLayout>
+            </StackLayout>
+          </StackLayout>
+          <StackLayout orientation="vertical" horizontalAlignment="right" class="w-[50%]">
+            <StackLayout orientation="horizontal" horizontalAlignment="center" class="br-30 bg-info"
+              (tap)="logOut()">
+              <StackLayout orientation="horizontal" verticalAlignment="center" horizontalAlignment="center"
+                class="p-3 px-5">
+                <Label text="Logout" class="text-sz-14 text-white font-medium text-center"
+                  horizontalAlignment="center"></Label>
+              </StackLayout>
+            </StackLayout>
+          </StackLayout>
+        </StackLayout>
+      </GridLayout>
+    </StackLayout>
+
+    <!-- Return Page -->
+    <StackLayout *ngIf="type == 10002" class="bg-white" height="550" borderRadius="25 25 0 0">
+      <GridLayout orientation="vertical" rows="auto,*,auto" class="border-bottom pt-5 pb-5 w-[100%]">
+        <GridLayout columns="*,50" rows="*" dock="top" class="bg-white px-5 border-gray-200" verticalAlignment="center">
+          <Label col="0" row="0" text="Reason For Return" verticalAlignment="center" horizontalAlignment="left"
+            class="text-black text-sz-16 pl-3 font-wt-700 text-sans"></Label>
+          <Label col="1" row="0" text="&#xf00d;" (tap)="close('')" verticalAlignment="center"
+            horizontalAlignment="center" class="text-right fas fa-thin text-secondary font-wt-100 text-2xl"></Label>
+        </GridLayout>
+        <StackLayout row="1" rows="auto,auto">
+          <GridLayout rows="auto,auto" class="bg-searchBg border-1-grey pl-4 mt-4 mx-5"
+            (tap)="openReturnRequestList()">
+            <StackLayout row="0" orientation="horizontal">
+              <label text="Reason" class="text-sz-12 text-label pt-2" textWrap="true"></label>
+              <label text="&#xf069;" class="fas text-sz-10 pt-2 pl-1"></label>
+            </StackLayout>
+            <GridLayout rows="auto" class="pt-5">
+              <StackLayout col="1" class="pt-2 pr-1 pb-1">
+                <Label class="text-black text-sz-14 bg-searchBg mb-2" *ngIf="!isSelectedReason"
+                  verticalAlignment="center" text="Select Reason for Return" row="0" col="1" returnKeyType="done">
+                </Label>
+                <Label class="text-black text-sz-14 bg-searchBg mb-2" *ngIf="isSelectedReason"
+                  verticalAlignment="center" [text]="selectedReason.name" row="0" col="1" returnKeyType="done">
+                </Label>
+              </StackLayout>
+            </GridLayout>
+          </GridLayout>
+          <StackLayout row="1" class="bg-searchBg mt-5 pb-5" height="400" *ngIf="showReturnRequestList">
+            <ScrollView class="border-1-grey mx-5">
+              <StackLayout verticalAlignment="center">
+                <GridLayout rows="50" columns="auto,*" verticalAlignment="center" class="p-1 border-b-2 border-gray-200"
+                  *ngFor="let return of wholeOrderReturns">
+                  <StackLayout row="0" col="0" verticalAlignment="center" horizontalAlignment="center"
+                    (tap)="selectSubFilter(return)" class="pl-5">
+                    <label [text]="return.name" class="text-black text-left text-sz-14" textWrap="true"></label>
+                  </StackLayout>
+                  <StackLayout row="0" col="1" verticalAlignment="center" horizontalAlignment="right"
+                    (tap)="selectSubFilter(return)" class="mr-5">
+                    <SVGImage src="~/images/redesign/icons/radio-selected.svg" *ngIf="return.isSelected"
+                      class="w-4 h-4">
+                    </SVGImage>
+                    <SVGImage src="~/images/redesign/icons/radio-before.svg" *ngIf="!return.isSelected" class="w-4 h-4">
+                    </SVGImage>
+                  </StackLayout>
+                </GridLayout>
+              </StackLayout>
+            </ScrollView>
+          </StackLayout>
+        </StackLayout>
+
+        <StackLayout height="70" row="2" class="w-[80%]" horizontalAlignment="center" verticalAlignment="center"
+          class="mt-2">
+          <GridLayout class="primary-btn3 float-grid" horizontalAlignment="center" verticalAlignment="center"
+            height="50" (tap)="wholeOrderReturn()">
+            <Label text="Submit" horizontalAlignment="center" verticalAlignment="center"
+              class="text-sz-14 fabold"></Label>
+          </GridLayout>
+        </StackLayout>
+      </GridLayout>
+    </StackLayout>
+
+
+    <!--Hop Status otp Number-->
+    <StackLayout *ngIf="type === 10003" class="pb-5 px-5 bg-white" height="450" borderRadius="25 25 0 0">
+      <GridLayout columns="*,30" rows="*" dock="top" class="bg-white p-3 border-b-2 border-gray-200"
+        verticalAlignment="center" height="50">
+        <Label col="1" row="0" text="&#xf00d;" (tap)="close('')" verticalAlignment="center" horizontalAlignment="center"
+          class="text-right fas fa-thin text-secondary font-wt-100 text-xl"></Label>
+      </GridLayout>
+
+      <GridLayout rows="*,auto,*">
+        <StackLayout row="0" class="pt-2 pl-2 pr-1 pb-1 pt-5">
+          <label text="Please Enter OTP Number" textWrap="true"
+            class="text-black text-left font-wt-700 text-sz-22 mt-5"></label>
+        </StackLayout>
+
+        <StackLayout row="1" class="bg-searchBg border-1-grey mx-5 ">
+          <TextField #otpField class="text-black text-center text-sz-18 no-underline" verticalAlignment="center">
+          </TextField>
+        </StackLayout>
+
+        <StackLayout row="2" height="70" class="mx-5 mt-10 cat_image">
+          <Label text="Submit" (tap)="updateHopStatus(otpField.text)"
+            class="primary-btn text-sz-14  h-11 p-3 text-center font-wt-500 rounded-full  border-2 border-black bg-black text-white font-serif"></Label>
+        </StackLayout>
+      </GridLayout>
+    </StackLayout>
+
+    <!--Admin Trip List Page Filters-->
+    <StackLayout *ngIf="type == 10004" class="pb-5 px-5 bg-white" height="450" borderRadius="25 25 0 0">
+
+      <GridLayout rows="70,*,*">
+
+        <GridLayout row="0" columns="*,50" rows="*" dock="top" class="bg-white mt-5 pb-4 border-b-2 border-gray-200"
+          verticalAlignment="center" height="50">
+          <Label col="0" row="0" text="Filters" verticalAlignment="center" horizontalAlignment="left"
+            class="text-black text-sz-16 pl-3 font-wt-700 text-sans"></Label>
+          <Label col="1" row="0" text="&#xf00d;" (tap)="close('')" verticalAlignment="center"
+            horizontalAlignment="center" class="m-0 text-right fas fa-thin text-secondary font-wt-100 text-2xl"></Label>
+        </GridLayout>
+
+        <GridLayout row="1" rows="*" columns="2*,3*" height="100%">
+          <ScrollView row="0" col="0" height="100%" scrollBarIndicatorVisible="false">
+            <StackLayout>
+              <StackLayout *ngFor="let filter of mainFilters" verticalAlignment="center"
+                (tap)="onTripListFilterChange(filter.name)" class="border-1x">
+                <StackLayout height="50" verticalAlignment="center" orientation="horizontal"
+                  [ngClass]="filter.id == selectedFilter ? 'bg-searchBg':'bg-white'">
+                  <Label [text]="filter.displayName" class="text-left text-black pl-5" textWrap="true"
+                    verticalAlignment="center"></Label>
+                </StackLayout>
+              </StackLayout>
+            </StackLayout>
+          </ScrollView>
+          <ScrollView row="0" col="1" height="100%" scrollBarIndicatorVisible="false">
+
+            <StackLayout rows="*,auto">
+              <StackLayout row="0" class="ml-2" *ngIf="!showMultipleDate">
+                <StackLayout *ngFor="let filter of subFilters" verticalAlignment="center">
+                  <GridLayout rows="50" columns="10,*,40,5" verticalAlignment="center" class=" border-gray-200">
+                    <StackLayout row="0" col="1" verticalAlignment="center" horizontalAlignment="left">
+                      <label [text]="filter.name" class="text-black text-left text-sz-14" textWrap="true"></label>
+                    </StackLayout>
+                    <StackLayout row="0" col="2" verticalAlignment="center" (tap)="selectTripIndentFilter(filter)">
+                      <SVGImage src="~/images/redesign/icons/radio-selected.svg" *ngIf="filter.isSelected"
+                        class="w-4 h-4">
+                      </SVGImage>
+                      <SVGImage src="~/images/redesign/icons/radio-before.svg" *ngIf="!filter.isSelected"
+                        class="w-4 h-4">
+                      </SVGImage>
+                    </StackLayout>
+                  </GridLayout>
+                </StackLayout>
+              </StackLayout>
+              <StackLayout row="0" *ngIf="showMultipleDate">
+                <GridLayout rows="50" columns="10,*,40,5" verticalAlignment="center" class=" border-b-2 border-gray-200"
+                  *ngIf="!showStartDate">
+                  <StackLayout row="0" col="1" verticalAlignment="center" horizontalAlignment="left">
+                    <Label text="Start Date" class="text-black  text-sz-14" *ngIf="!selectedTripStartDate"></Label>
+                    <Label [text]="selectedTripStartDate" class="text-black  text-sz-14"
+                      *ngIf="selectedTripStartDate"></Label>
+                  </StackLayout>
+                  <StackLayout row="0" col="2" verticalAlignment="center" (tap)="selectStartDate()">
+                    <label row="0" col="2" text="&#xf073;" class="fas text-sz-14"></label>
+                  </StackLayout>
+                </GridLayout>
+                <GridLayout rows="auto" *ngIf="showStartDate">
+                  <DatePicker #startDatePicker [(ngModel)]="startDate"></DatePicker>
+                </GridLayout>
+                <GridLayout rows="50" columns="10,*,40,5" verticalAlignment="center" class=" border-b-2 border-gray-200"
+                  *ngIf="!showEndDate">
+                  <StackLayout row="0" col="1" verticalAlignment="center" horizontalAlignment="left">
+                    <Label text="End Date" class="text-black  text-sz-14" *ngIf="!selectedTripEndDate"></Label>
+                    <Label [text]="selectedTripEndDate" class="text-black  text-sz-14"
+                      *ngIf="selectedTripEndDate"></Label>
+                  </StackLayout>
+                  <StackLayout row="0" col="2" verticalAlignment="center" (tap)="selectEndDate()">
+                    <label row="0" col="2" text="&#xf073;" class="fas text-sz-14"></label>
+                  </StackLayout>
+                </GridLayout>
+                <GridLayout rows="auto" *ngIf="showEndDate">
+                  <DatePicker #endDatePicker [(ngModel)]="endDate"></DatePicker>
+                </GridLayout>
+              </StackLayout>
+
+            </StackLayout>
+          </ScrollView>
+        </GridLayout>
+        <GridLayout row="2">
+          <StackLayout row="1" verticalAlignment="bottom"
+            *ngIf="(showStartDate && !showEndDate) || (!showStartDate && showEndDate)">
+            <Label type="Label"
+              class="primary-btn w-[80%] text-sz-14 font-semibold text-sz-11  h-11 p-3 text-center font-wt-500 rounded-full  border-2 border-black bg-black text-white font-serif"
+              (tap)="onOkClick()">
+              Ok
+            </Label>
+          </StackLayout>
+          <StackLayout row="1" verticalAlignment="bottom" *ngIf="!showStartDate && !showEndDate">
+            <Label type="Label"
+              class="primary-btn w-[80%] text-sz-14 mt-5 font-semibold text-sz-11  h-11 p-3 text-center font-wt-500 rounded-full  border-2 border-black bg-black text-white font-serif"
+              (tap)="tripIndentDateFilter()">
+              Apply
+            </Label>
+          </StackLayout>
+        </GridLayout>
+      </GridLayout>
+    </StackLayout>
+
+    <!--Hop Admin List Filters-->
+    <StackLayout *ngIf="type == 10005" class="pb-5 px-5 bg-white" height="450" borderRadius="25 25 0 0">
+
+
+      <GridLayout rows="70,*,*">
+
+        <GridLayout row="0" columns="*,50" rows="*" dock="top" class="bg-white mt-5 pb-4 border-b-2 border-gray-200"
+          verticalAlignment="center" height="50">
+          <Label col="0" row="0" text="Filters" verticalAlignment="center" horizontalAlignment="left"
+            class="text-black text-sz-16 pl-3 font-wt-700 text-sans"></Label>
+          <Label col="1" row="0" text="&#xf00d;" (tap)="close('')" verticalAlignment="center"
+            horizontalAlignment="center" class="m-0 text-right fas fa-thin text-secondary font-wt-100 text-2xl"></Label>
+        </GridLayout>
+        <GridLayout row="1" rows="*" columns="2*,3*" height="100%">
+          <ScrollView row="0" col="0" height="100%" scrollBarIndicatorVisible="false">
+            <StackLayout>
+              <StackLayout *ngFor="let filter of mainFilters" verticalAlignment="center"
+                (tap)="onHopListFilterChange(filter.name)" class="border-1x">
+                <StackLayout height="50" verticalAlignment="center" orientation="horizontal" class="bg-searchBg"
+                  [ngClass]="filter.id == selectedFilter ? 'bg-searchBg':'bg-white'">
+                  <Label [text]="filter.displayName" class="text-left text-black pl-5" textWrap="true"
+                    verticalAlignment="center"></Label>
+                </StackLayout>
+              </StackLayout>
+            </StackLayout>
+          </ScrollView>
+          <StackLayout class="ml-2" col="1">
+            <StackLayout *ngFor="let filter of subFilters" verticalAlignment="center">
+              <GridLayout rows="50" columns="10,*,40,5" verticalAlignment="center" class="border-b-2 border-gray-200">
+                <StackLayout row="0" col="1" verticalAlignment="center" horizontalAlignment="left">
+                  <label [text]="filter.name" class="text-black text-left text-sz-14" textWrap="true"></label>
+                </StackLayout>
+                <StackLayout row="0" col="2" verticalAlignment="center" (tap)="selectFilterInvoice(filter)">
+                  <SVGImage src="~/images/redesign/icons/radio-selected.svg" *ngIf="filter.isSelected" class="w-4 h-4">
+                  </SVGImage>
+                  <SVGImage src="~/images/redesign/icons/radio-before.svg" *ngIf="!filter.isSelected" class="w-4 h-4">
+                  </SVGImage>
+                </StackLayout>
+              </GridLayout>
+            </StackLayout>
+
+
+          </StackLayout>
+
+        </GridLayout>
+
+        <GridLayout row="2">
+          <StackLayout height="70" class="mx-5 cat_image">
+            <Label (tap)="generateInvoices()"
+              class="text-sz-14 mt-5  h-11 p-3 text-center font-wt-500 rounded-full  border-2 border-black bg-black text-white font-serif">
+              Apply
+            </Label>
+          </StackLayout>
+        </GridLayout>
+      </GridLayout>
+
+    </StackLayout>
+
+
+
+    <StackLayout *ngIf="type === 10006" class="pb-5 bg-white" height="350" borderRadius="25 25 0 0">
+      <GridLayout orientation="vertical" rows="auto,auto,auto">
+        <StackLayout row="0" horizontalAlignment="center" verticalAlignment="top" class="border-bottom px-5 w-[100%]">
+          <Label text="Logout" class="text-cancel text-sz-20 text-center font-medium p-5 "></Label>
+        </StackLayout>
+        <StackLayout row="1" horizontalAlignment="center" class="mt-10" verticalAlignment="top" *ngIf="!isCacheReturn">
+          <Label text="Do you want to Logout ?" class="text-black text-sz-16 font-medium"></Label>
+        </StackLayout>
+        <StackLayout row="1" horizontalAlignment="center" class="mt-10" verticalAlignment="top" *ngIf="isCacheReturn">
+          <Label text="You have pending returns," class="text-black text-sz-16 font-medium text-center">
+          </Label><Label text="do you want to delete the changes and Logout" class="text-black text-sz-16 font-medium text-center"></Label>
+        </StackLayout>
+        <StackLayout row="2" class="p-2 mt-10" orientation="horizontal" verticalAlignment="top">
+          <StackLayout orientation="vertical" horizontalAlignment="left" class="w-[50%]">
+            <StackLayout orientation="horizontal" horizontalAlignment="center" class="br-30 border-1 bg-searchBg"
+              (tap)="close()">
+              <StackLayout orientation="horizontal" verticalAlignment="center" horizontalAlignment="center"
+                class="p-3 px-5">
+                <Label text="Cancel" class="text-black text-sz-14 font-medium text-center"
+                  horizontalAlignment="center"></Label>
+              </StackLayout>
+            </StackLayout>
+          </StackLayout>
+          <StackLayout orientation="vertical" horizontalAlignment="right" class="w-[50%]">
+            <StackLayout orientation="horizontal" horizontalAlignment="center" class="br-30 border-1 bg-info"
+              (tap)="logOut()">
+              <StackLayout orientation="horizontal" verticalAlignment="center" horizontalAlignment="center"
+                class="p-3 px-5">
+                <Label text="Logout" class="text-sz-14 text-white font-medium text-center"
+                  horizontalAlignment="center"></Label>
+              </StackLayout>
+            </StackLayout>
+          </StackLayout>
+        </StackLayout>
+      </GridLayout>
+    </StackLayout>
+
+    <StackLayout *ngIf="type === 10007" class="pb-5 bg-white" height="350" borderRadius="25 25 0 0">
+      <GridLayout orientation="vertical" rows="auto,auto,auto">
+        <StackLayout row="0" horizontalAlignment="center" verticalAlignment="top" class="border-bottom px-5 w-[100%]">
+          <Label text="Pending Returns" class="text-cancel text-sz-20 text-center font-medium p-5 "></Label>
+        </StackLayout>
+        <StackLayout row="1" horizontalAlignment="center" class="mt-10" verticalAlignment="top">
+          <Label text="You have pending returns," class="text-black text-sz-16 font-medium text-center">
+          </Label><Label text="do you want to delete the changes" class="text-black text-sz-16 font-medium text-center"></Label>
+        </StackLayout>
+        <StackLayout row="2" class="p-2 mt-10" orientation="horizontal" verticalAlignment="top">
+          <StackLayout orientation="vertical" horizontalAlignment="left" class="w-[50%]">
+            <StackLayout orientation="horizontal" horizontalAlignment="center" class="br-30 border-1 bg-searchBg"
+            (tap)="removeReturnCache()">
+              <StackLayout orientation="horizontal" verticalAlignment="center" horizontalAlignment="center"
+                class="p-3 px-5">
+                <Label text="No" class="text-black text-sz-14 font-medium text-center"
+                  horizontalAlignment="center"></Label>
+              </StackLayout>
+            </StackLayout>
+          </StackLayout>
+          <StackLayout orientation="vertical" horizontalAlignment="right" class="w-[50%]">
+            <StackLayout orientation="horizontal" horizontalAlignment="center" class="br-30 border-1 bg-black"
+              (tap)="removeReturnCache(true)">
+              <StackLayout orientation="horizontal" verticalAlignment="center" horizontalAlignment="center"
+                class="p-3 px-5">
+                <Label text="Yes" class="text-black text-sz-14 text-white font-medium text-center"
+                  horizontalAlignment="center"></Label>
+              </StackLayout>
+            </StackLayout>
+          </StackLayout>
+        </StackLayout>
+      </GridLayout>
+    </StackLayout>
+
+  </GridLayout>
+
+
+
+</GridLayout>
