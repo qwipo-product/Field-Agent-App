@@ -598,7 +598,7 @@ function applyNsProp(el: NsElement, rawName: string, value: any): boolean {
             else s.removeProperty('--ns-ha'), delete el.dataset.nsHa;
             return true;
         case 'verticalAlignment':
-            if (V_ALIGN[value] && value !== 'stretch') s.setProperty('--ns-va', V_ALIGN[value]), (el.dataset.nsVa = '');
+            if (V_ALIGN[value] && value !== 'stretch') s.setProperty('--ns-va', V_ALIGN[value]), (el.dataset.nsVa = value === 'middle' ? 'center' : value);
             else s.removeProperty('--ns-va'), delete el.dataset.nsVa;
             return true;
         case 'visibility':

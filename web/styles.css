@@ -278,6 +278,10 @@ router-outlet { display: none; }
 .ns-hscroll { display: flex; flex-direction: row; overflow-x: auto; overflow-y: hidden; }
 .ns-listview { display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; }
 .ns-vscroll, .ns-hscroll, .ns-listview { scrollbar-width: thin; overscroll-behavior: contain; }
+/* A ScrollView lays a shorter child out in the full viewport, by the child's vertical alignment. */
+.ns-vscroll > .ns-view:not([data-ns-va]), .ns-vscroll > .ns-proxy > .ns-view:not([data-ns-va]) { min-height: 100%; }
+.ns-vscroll > .ns-view[data-ns-va="center"], .ns-vscroll > .ns-proxy > .ns-view[data-ns-va="center"] { margin-top: auto; margin-bottom: auto; }
+.ns-vscroll > .ns-view[data-ns-va="bottom"], .ns-vscroll > .ns-proxy > .ns-view[data-ns-va="bottom"] { margin-top: auto; }
 
 /* Children of a vertical stack: full width unless aligned; never squeezed (except a scroller's path). */
 :is(.ns-vstack, .ns-vscroll, .ns-listview, .ns-lv-item, .ns-dock-v) > .ns-view,
