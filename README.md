@@ -80,15 +80,16 @@ app's markup.
 The phone is laid out at the exact size of the reference emulator (Pixel, 1080×2424 at 420 dpi: a
 411.4 × 845.3 dp app area under a 54 dp status bar) and scaled to fit any window; on a phone the app
 fills the screen. `web/shims/renderer.ts` applies NativeScript's Android layout rules, taken from its
-`StackLayout`/`CommonLayoutParams` code: lengths rounded to device pixels, percentages of the parent's full
-width, children clamped to the space left, Android text metrics (font padding, hinted glyph advances,
-synthetic bold), and `px` meaning device pixels. The device's own Roboto font is bundled
-(`web/fonts/Roboto-Android.ttf`, Apache 2.0).
+`StackLayout`/`GridLayout`/`CommonLayoutParams` code: lengths rounded to device pixels, percentages of the
+parent's full size (and dropped when the parent's height is unbounded), children clamped to the space
+left, `*` grid rows sized by their content when nothing above bounds the grid's height, Android text
+metrics (font padding, hinted glyph advances, synthetic bold), and `px` meaning device pixels. The
+device's own Roboto font is bundled (`web/fonts/Roboto-Android.ttf`, Apache 2.0).
 
-Checked against the emulator element by element (position and size of every text view and image):
-almost every screen matches within 2 dp. Two spots differ by a few dp because NativeScript's GridLayout
-sizes `*` rows differently when a grid is only partly constrained (My Account links: 3.6 dp; the QR
-amount block in the payment sheet: 7.4 dp).
+Checked against the emulator element by element (position and size of every text view and image) on 24
+screens and sheets: 22 match within 2 dp. On the product-wise list the last, partly hidden row is cut
+2.1 dp shorter, and on the force-update page the Update button sits 2.9 dp higher (the bold lines above
+it are slightly shorter).
 
 Works in current Chrome, Edge, Safari and Firefox (needs CSS container queries: Chrome/Edge 105+,
 Safari 16+, Firefox 110+).

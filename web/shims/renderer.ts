@@ -197,33 +197,68 @@ function insetOf(container: Element): string {
     return inset;
 }
 
+const hasPercentHeight = (el: HTMLElement) => /(?:^|\s)h-(\[[\d.]+%\]|full)(?:\s|$)/.test(el.className) || /%$/.test(el.dataset.nsH ?? '');
+
 /**
- * Whether a view's height is bounded by its parents. NativeScript ignores a percentage height when it
- * isn't (inside list items, scroll content, or an "auto" row of a grid that is itself content-sized).
+ * True when NativeScript measures this view with an UNSPECIFIED height: nothing above it bounds it
+ * (list items, vertical scroll content, an "auto" grid row, and content-sized views below those).
  */
-function heightBounded(el: HTMLElement): boolean {
-    let child = el;
-    for (let p = layoutParent(child); p; child = p, p = layoutParent(p)) {
-        if (p.classList.contains('ns-lv-item')) return false;
-        if (!p.__ns) return true;
-        if (p.hasAttribute('data-ns-fh')) return true;
-        const kind = p.__ns.kind;
-        if (kind === 'scroll') return false;
-        if (kind === 'root' || kind === 'content' || (kind === 'dock' && child.classList.contains('ns-dock-fill'))) return true;
-        if (kind === 'grid' && child.hasAttribute('data-ns-autorow') && !p.classList.contains('ns-grow')) return false;
+function heightUnbounded(el: NsElement, seen = new Map<Element, boolean>()): boolean {
+    let result = seen.get(el);
+    if (result !== undefined) return result;
+    const p = layoutParent(el);
+    if (!p || (el.hasAttribute('data-ns-fh') && !hasPercentHeight(el))) result = false;
+    else if (p.classList.contains('ns-lv-item')) result = true;
+    else if (!p.__ns) result = false;
+    else {
+        const parentUnbounded = heightUnbounded(p, seen);
+        // A percentage of a bounded parent is a fixed size.
+        if (hasPercentHeight(el) && !parentUnbounded) result = false;
+        else
+            switch (p.__ns.kind) {
+                case 'root':
+                case 'content':
+                    result = false;
+                    break;
+                case 'absolute':
+                    result = true;
+                    break;
+                case 'scroll':
+                    result = p.classList.contains('ns-vscroll') || parentUnbounded;
+                    break;
+                case 'grid': {
+                    // Children of "auto" rows are measured without a limit; so are those of "*" rows when
+                    // the grid itself is (GridLayout's ItemGroup treats such star rows as auto).
+                    const rows = (p.dataset.rows ?? '*').split(',');
+                    const track = rows[Math.min(el.__ns?.row ?? 0, rows.length - 1)].trim();
+                    result = track === 'auto' || (track.endsWith('*') && parentUnbounded);
+                    break;
+                }
+                default:
+                    result = parentUnbounded;
+            }
     }
-    return true;
+    seen.set(el, result);
+    return result;
 }
 
-const hasPercentHeight = (el: HTMLElement) => /(?:^|\s)h-(\[[\d.]+%\]|full)(?:\s|$)/.test(el.className) || /%$/.test(el.dataset.nsH ?? '');
+/** A grid measured without a height limit sizes its "*" rows by content, like "auto", with no sharing. */
+function setRowTracks(grid: NsElement, unbounded: boolean) {
+    const rows = grid.dataset.rows ?? '*';
+    const spec = unbounded ? rows.split(',').map((t) => (t.trim().endsWith('*') ? 'auto' : t)).join(',') : rows;
+    grid.style.gridTemplateRows = gridTracks(spec);
+    grid.toggleAttribute('data-ns-rows-auto', unbounded);
+}
 
 function refreshContainment(node: Node) {
     if (!(node instanceof HTMLElement)) return;
     const views = [node, ...Array.from(node.querySelectorAll<HTMLElement>('.ns-view'))] as NsElement[];
     for (const v of views) if (v.__ns && LAYOUTS.has(v.__ns.kind)) v.classList.toggle('ns-cq', widthFromParent(v));
     if (!node.isConnected) return;
+    const unbounded = new Map<Element, boolean>();
     // Each view resolves percentage widths against its nearest container ancestor (the one cqw uses).
     for (const v of views) {
+        if (v.__ns?.kind === 'grid' && v.hasAttribute('data-ns-star')) setRowTracks(v, heightUnbounded(v, unbounded));
         const container = v.parentElement?.closest('.ns-cq');
         if (container) {
             // A content-sized view in between offers its children its own width less its margins.
@@ -236,7 +271,9 @@ function refreshContainment(node: Node) {
             v.style.setProperty('--ns-cq-padx', `${base}px`);
         }
         if (hasPercentHeight(v)) {
-            const bounded = heightBounded(v);
+            // NativeScript resolves a percentage against the parent's own height limit, and drops it without one.
+            const p = layoutParent(v);
+            const bounded = !p || (!p.classList.contains('ns-lv-item') && !(p.__ns && heightUnbounded(p, unbounded)));
             if (!bounded) v.style.setProperty('height', 'auto', 'important');
             else if (v.style.getPropertyPriority('height')) v.style.height = v.dataset.nsH ? px(v.dataset.nsH) : '';
         }
@@ -573,7 +610,7 @@ function applyNsProp(el: NsElement, rawName: string, value: any): boolean {
             el.dataset[name] = String(value);
             if (name === 'rows') el.toggleAttribute('data-ns-star', String(value).includes('*'));
             if (name === 'columns') el.toggleAttribute('data-ns-starcol', String(value).includes('*'));
-            if (name === 'rows') s.gridTemplateRows = gridTracks(value);
+            if (name === 'rows') setRowTracks(el, el.hasAttribute('data-ns-rows-auto') && String(value).includes('*'));
             else s.gridTemplateColumns = gridTracks(value);
             Array.from(el.children).forEach((c) => placeInGrid(c as NsElement));
             return true;
