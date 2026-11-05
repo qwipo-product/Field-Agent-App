@@ -1,5 +1,6 @@
-// Compiles the app's own stylesheet (src/app.android.scss + Tailwind) for the browser build and
-// rewrites NativeScript-only CSS into web CSS. Output (git-ignored): web/gen/app.css, plus
+// Compiles the app's own stylesheet (src/app.android.scss + Tailwind) exactly as the NativeScript build
+// does (same PostCSS plugins as @nativescript/tailwind's webpack hook), then rewrites that NativeScript
+// CSS into web CSS. Output (git-ignored): web/gen/app.css, plus
 // web/gen/sizing.ts listing the classes that give a view a fixed width/height (see renderer.ts).
 //   node web/build-css.mjs           build once
 //   node web/build-css.mjs --watch   rebuild when src/ styles or templates change
@@ -14,6 +15,8 @@ import tailwindcss from 'tailwindcss';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const require = createRequire(import.meta.url);
 const tailwindConfig = require(resolve(root, 'tailwind.config.js'));
+const nativescriptTailwind = require('@nativescript/tailwind');
+const isPseudoClass = require('@csstools/postcss-is-pseudo-class');
 
 const LENGTH = /^(font-size|width|height|min-width|min-height|max-width|max-height|margin(-\w+)?|padding(-\w+)?|border(-\w+)?-width|border-width|border(-\w+)*-radius|top|right|bottom|left|gap|row-gap|column-gap)$/;
 const H_ALIGN = { left: 'flex-start', center: 'center', right: 'flex-end', stretch: 'stretch' };
@@ -24,12 +27,37 @@ const TYPES = {
   listview: 'listview', actionbar: 'actionbar', activityindicator: 'activity', switch: 'switch', page: 'content', span: 'span',
 };
 
-const addPx = (value) => value.replace(/(^|[\s,(])(-?\d*\.?\d+)(?=$|[\s,)])/g, (m, pre, n) => (Number(n) === 0 ? m : `${pre}${n}px`));
+/** Android lays out in whole device pixels: a dp length becomes round(dp * density) px. */
+const DENSITY = 2.625;
+const dpToDevice = (n) => +(Math.round(Number(n) * DENSITY) / DENSITY).toFixed(4);
+const addPx = (value) => value.replace(/(^|[\s,(])(-?\d*\.?\d+)(px)?(?=$|[\s,)])/g, (m, pre, n) => (Number(n) === 0 ? m : `${pre}${n}px`));
+/** Tailwind's space-x/y use calc() with a "reverse" variable that is 0 here; evaluate them to a number. */
+const evalCalc = (value) => {
+  const expr = value.replace(/var\(--tw-[a-z-]*reverse\)/g, '0').replace(/calc\(/g, '(');
+  return /^[\d.\s+\-*/()]+$/.test(expr) ? String(+Function(`return ${expr}`)().toFixed(4)) : value;
+};
+
+// In NativeScript CSS a bare number is dp, while "px" means physical device pixels.
+const devicePx = (value) =>
+  (value.includes('calc(') ? evalCalc(value) : value).replace(/(^|[\s,(])(-?\d*\.?\d+)(px)?(?=$|[\s,)])/g, (m, pre, n, unit) =>
+    Number(n) === 0 ? m : `${pre}${unit ? +(Number(n) / DENSITY).toFixed(4) : dpToDevice(n)}px`,
+  );
+/** Percentages are a share of the parent's full width, padding included (renderer.ts sets --ns-cq-padx). */
+const percentWidth = (p) => `calc((100cqw + var(--ns-cq-padx, 0px)) * ${p / 100})`;
 
 const fixedWidth = new Set();
 const fixedHeight = new Set();
 /** Class name of a single-class selector such as ".w-\[98\%\]" (unescaped), else null. */
 const singleClass = (sel) => (/^\.((?:\\.|[\w-])+)$/.exec(sel.trim())?.[1] ?? '').replace(/\\(.)/g, '$1') || null;
+
+const converted = new WeakSet();
+
+/** Vertical metrics (head yMax/yMin, hhea ascender/descender in em) of the icon fonts, for Android line heights. */
+const FONT_METRICS = {
+  'fa-solid-900': ['0.90039em', '0.875em', '0.125em', '0.14844em'],
+  'fa-regular-400': ['0.89258em', '0.875em', '0.125em', '0.13867em'],
+  'fa-brands-400': ['0.9375em', '0.875em', '0.125em', '0.1582em'],
+};
 
 /** NativeScript CSS → browser CSS. */
 const nativescriptToWeb = {
@@ -50,6 +78,9 @@ const nativescriptToWeb = {
     );
   },
   Declaration(decl) {
+    // PostCSS revisits declarations it has changed; convert each one only once.
+    if (converted.has(decl)) return;
+    converted.add(decl);
     const prop = decl.prop.toLowerCase();
     const value = decl.value.trim();
     if (prop === 'horizontal-align') {
@@ -69,17 +100,23 @@ const nativescriptToWeb = {
       // NativeScript accepts unquoted names like Font Awesome 5 Free; browsers need them quoted.
       const families = value.split(',').map((f) => f.trim()).map((f) => (/\s/.test(f) && !/^["']/.test(f) ? `"${f}"` : f));
       decl.value = [...families, 'ns-system', 'sans-serif'].join(', ');
+      const metrics = FONT_METRICS[families.find((f) => FONT_METRICS[f])];
+      if (metrics) ['--ns-f-top', '--ns-f-asc', '--ns-f-desc', '--ns-f-bottom'].forEach((p, i) => converted.add(decl.cloneAfter({ prop: p, value: metrics[i] })));
+    } else if (prop === 'line-height') {
+      // NativeScript's line-height is extra space between lines (dip), not the line box height.
+      decl.replaceWith({ prop: '--ns-lh-extra', value: addPx(value) });
     } else if (prop === 'letter-spacing' && /^-?\d*\.?\d+$/.test(value)) {
       decl.value = `${value}em`;
-    } else if (/^(min-|max-)?width$/.test(prop) && /^-?[\d.]+%$/.test(value)) {
-      // Percentage widths are a share of the space the parent offers (see .ns-cq in styles.css).
-      decl.value = `${parseFloat(value)}cqw`;
+    } else if (/^((min-|max-)?width|margin-(left|right))$/.test(prop) && /^-?[\d.]+%$/.test(value)) {
+      decl.value = percentWidth(parseFloat(value));
+    } else if (LENGTH.test(prop) && prop !== 'font-size') {
+      decl.value = devicePx(value);
     } else if (LENGTH.test(prop)) {
       decl.value = addPx(value);
     } else if (prop === 'border' || /^border-(top|right|bottom|left)$/.test(prop)) {
       // NativeScript reads "border: 1 #ccc" as width + colour; CSS also needs a style.
       const styled = /\b(solid|dashed|dotted|double|none|hidden|groove|ridge|inset|outset)\b/.test(value);
-      decl.value = addPx(value) + (styled ? '' : ' solid');
+      decl.value = devicePx(value) + (styled ? '' : ' solid');
     }
   },
 };
@@ -89,7 +126,10 @@ async function build() {
   fixedHeight.clear();
   const scss = sass.compile(resolve(root, 'src/app.android.scss'), { loadPaths: [resolve(root, 'node_modules')], style: 'expanded' }).css;
   const config = { ...tailwindConfig, content: [resolve(root, 'src/app/**/*.{html,ts}')] };
-  const result = await postcss([tailwindcss(config), nativescriptToWeb]).process(scss, { from: resolve(root, 'src/app.android.scss') });
+  const from = resolve(root, 'src/app.android.scss');
+  // What the device gets: node_modules/@nativescript/tailwind/nativescript.webpack.js
+  const nativescriptCss = await postcss([tailwindcss(config), nativescriptTailwind, isPseudoClass()]).process(scss, { from });
+  const result = await postcss([nativescriptToWeb]).process(nativescriptCss.css, { from });
 
   const out = resolve(root, 'web/gen/app.css');
   mkdirSync(dirname(out), { recursive: true });

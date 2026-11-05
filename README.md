@@ -29,8 +29,8 @@ Any 6-digit OTP works.
 | any other | – | "Field Agent not found" message |
 
 What you do is remembered until the app restarts: returns, QR and cash collections, completed stops and
-started trips all show up on later screens. In the browser, ○ under the phone restarts the app and
-**Reset demo** also signs you out. ◁ is Android's back button (Esc works too).
+started trips all show up on later screens. In the browser, **Back** under the phone is Android's back
+button (Esc works too), **Restart app** restarts it, and **Reset demo** also signs you out.
 
 ## Run it
 
@@ -72,8 +72,26 @@ web/                    Browser target for the same src/ code
 Totals are calculated from the orders, so balances stay consistent.
 
 **Changing the UI:** edit `src/` as you would in the real app; both targets pick it up. The Android build
-is the reference. The browser renderer reproduces NativeScript's layout rules closely, but if a screen
-looks different in the browser, check it on the emulator before changing the app's markup.
+is the reference; if a screen looks different in the browser, check it on the emulator before changing the
+app's markup.
+
+## How the browser version matches the APK
+
+The phone is laid out at the exact size of the reference emulator (Pixel, 1080×2424 at 420 dpi: a
+411.4 × 845.3 dp app area under a 54 dp status bar) and scaled to fit any window; on a phone the app
+fills the screen. `web/shims/renderer.ts` applies NativeScript's Android layout rules, taken from its
+`StackLayout`/`CommonLayoutParams` code: lengths rounded to device pixels, percentages of the parent's full
+width, children clamped to the space left, Android text metrics (font padding, hinted glyph advances,
+synthetic bold), and `px` meaning device pixels. The device's own Roboto font is bundled
+(`web/fonts/Roboto-Android.ttf`, Apache 2.0).
+
+Checked against the emulator element by element (position and size of every text view and image):
+almost every screen matches within 2 dp. Two spots differ by a few dp because NativeScript's GridLayout
+sizes `*` rows differently when a grid is only partly constrained (My Account links: 3.6 dp; the QR
+amount block in the payment sheet: 7.4 dp).
+
+Works in current Chrome, Edge, Safari and Firefox (needs CSS container queries: Chrome/Edge 105+,
+Safari 16+, Firefox 110+).
 
 ## What works differently from the live app
 

@@ -159,6 +159,9 @@ function keyframe(t: any = {}) {
     return { transform: parts.join(' ') || 'none', opacity: t.opacity ?? 1 };
 }
 
+/** Set by renderer.ts: settles NativeScript layout for views attached outside Angular's renderer. */
+export const layoutHooks: { attached?: (view: HTMLElement) => void } = {};
+
 export class WebRootLayout {
     private open_ = new Map<HTMLElement, OpenView>();
 
@@ -172,6 +175,7 @@ export class WebRootLayout {
         if (cover?.tapToClose) shade.onclick = () => this.close(view);
         view.classList.add('ns-root-overlay');
         this.host.append(shade, view);
+        layoutHooks.attached?.(view);
         this.open_.set(view, { shade, exitTo: options.animation?.exitTo });
         const duration = options.animation?.enterFrom?.duration ?? 300;
         const easing = options.animation?.enterFrom?.curve ?? 'ease-out';
